@@ -1,0 +1,27 @@
+<div class="container">
+    <div class="header">
+        <h1>Todo List</h1>
+    </div>
+    <div class="body">
+        @if (list.length) {
+            <ul>
+                @for (item of list; track $index) {
+                    <li>
+                        <div class="list-row">
+                            <span>{{ item.title }}</span>
+                            <button class="list-row-button" (click)="deleteItem(item.id)">Удалить</button>
+                        </div>
+                        
+                    </li>
+                }
+            </ul>
+        } @else {
+            <p>Здесь может быть ваш список дел!</p>
+        }
+    </div>
+    <div class="footer">
+        <input #taskInput class="footer-input" type="text" placeholder="Введите тут новое дело...">
+        <button class="footer-button" (click)="addItem(taskInput.value)">Добавить</button>
+    </div>
+</div>
+
