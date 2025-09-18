@@ -8,8 +8,8 @@
                 @for (item of list; track $index) {
                     <li>
                         <div class="list-row">
-                            {{ item }}
-                            <button class="list-row-button" (click)="deleteItem($index)">Удалить</button>
+                            <span>{{ item.title }}</span>
+                            <button class="list-row-button" (click)="deleteItem(item.id)">Удалить</button>
                         </div>
                         
                     </li>
