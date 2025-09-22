@@ -1,9 +1,10 @@
 import { Component, signal } from '@angular/core';
 import { ToDoListComponent } from './components/to-do-list/to-do-list';
+import { TuiRoot } from '@taiga-ui/core';
 
 @Component({
   selector: 'app-root',
-  imports: [ToDoListComponent],
+  imports: [ToDoListComponent, TuiRoot],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

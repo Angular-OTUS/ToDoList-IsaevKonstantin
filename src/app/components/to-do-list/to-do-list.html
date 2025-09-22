@@ -7,11 +7,7 @@
             <ul>
                 @for (item of list; track $index) {
                     <li>
-                        <div class="list-row">
-                            <span>{{ item.title }}</span>
-                            <button class="list-row-button" (click)="deleteItem(item.id)">Удалить</button>
-                        </div>
-                        
+                        <to-do-list-item [item]="item" (deleteItemEvent)="deleteItem($event)"></to-do-list-item>
                     </li>
                 }
             </ul>
@@ -20,8 +16,15 @@
         }
     </div>
     <div class="footer">
-        <input #taskInput class="footer-input" type="text" placeholder="Введите тут новое дело...">
-        <button class="footer-button" (click)="addItem(taskInput.value)">Добавить</button>
+        <tui-textfield class="input" tuiTextfieldSize="m" [tuiTextfieldCleaner]="true">
+            <label tuiLabel>Новое дело:</label>
+            <input
+                tuiTextfield
+                placeholder="Введите новое дело..."
+                [(ngModel)]="inputValue"
+            />
+        </tui-textfield>
+        <button class="button button-add" [disabled]="!inputValue.length" (click)="addItem(inputValue)">Добавить</button>
     </div>
 </div>
 
