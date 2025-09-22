@@ -1,9 +1,15 @@
-.container {
+:host {
     height: 96vh;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.container{
+    padding: 5px;
+    border: 2px solid #92fbff;
+    border-radius: 10px;
 }
 
 .header {
@@ -17,6 +23,7 @@
 
 .body {
     width: 400px;
+    background-color: rgba(157, 255, 255, 0.281);
     border-bottom: 1px solid #92fbff;
     display: flex;
     align-items: center;
@@ -25,57 +32,43 @@
 
 ul {
     width: 100%;
-}
-
-.list-row {
-    height: 25px;
-    margin: 2px 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    &-button {
-        width: 80px;
-        height: 100%;
-        background-color: #ff8453;
-        border-radius: 5px;
-        border: 1px solid black;
-    }
-
-    &-button:hover {
-        background-color: #ff9f79;
-    }
-
-    &-button:active {
-        background-color: #ff5b1a;
-    }
+    margin-block: 5px;
+    margin-right: 15px;
 }
 
 .footer {
     width: 400px;
-    height: 40px;
+    height: 45px;
     padding-top: 5px;
     display: flex;
+    align-items: center;
     justify-content: space-evenly;
-
-    &-button {
-        width: 100px;
-        background-color: #92fbff;
-        border-radius: 5px;
-        border: 1px solid black;
-    }
-
-    &-button:hover {
-        background-color: #a7fafd;
-    }
-
-    &-button:active {
-        background-color: #6efaff;
-    }
 }
 
-input {
+.input {
     width: 250px;
-    border-radius: 5px;
-    border: 1px solid black;
+}
+
+.button {
+    color: white;
+    border: 0;
+
+    &:disabled {
+        opacity: 0.5;
+    }
+
+    &-add {
+        width: 100px;
+        height: 100%;
+        background-color: #50ff93;
+        border-radius: 5px;
+
+        &:not(:disabled):hover {
+            background-color: #0fff6b;
+        }
+
+        &:not(:disabled):active {
+            background-color: #8effb9;
+        }
+    }
 }

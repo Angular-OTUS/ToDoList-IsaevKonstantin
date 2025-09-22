@@ -26,6 +26,11 @@
     "@angular/forms": "^20.1.0",
     "@angular/platform-browser": "^20.1.0",
     "@angular/router": "^20.1.0",
+    "@taiga-ui/cdk": "^4.54.0",
+    "@taiga-ui/core": "^4.54.0",
+    "@taiga-ui/event-plugins": "^4.0.2",
+    "@taiga-ui/icons": "^4.54.0",
+    "@taiga-ui/kit": "^4.54.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
@@ -41,6 +46,8 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "less": "^4.4.1",
+    "less-loader": "^12.3.0",
     "typescript": "~5.8.2"
   }
 }
