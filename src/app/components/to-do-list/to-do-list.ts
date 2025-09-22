@@ -24,7 +24,7 @@ export class ToDoListComponent {
 
   protected addItem(text: string): void {
     if (text.trim()) {
-      let nextId: number = this.list.length ? Math.max(...this.list.map(item => item.id)) + 1 : 0;
+      const nextId: number = this.list.length ? Math.max(...this.list.map(item => item.id)) + 1 : 0;
       this.list.push({
         id: nextId,
         text: text,
