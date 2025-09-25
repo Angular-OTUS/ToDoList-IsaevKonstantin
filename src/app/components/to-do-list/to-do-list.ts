@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToDoListItem } from '../to-do-list-item/to-do-list-item';
-import { TuiTextfield } from '@taiga-ui/core';
+import { TuiLoader, tuiLoaderOptionsProvider, TuiTextfield } from '@taiga-ui/core';
+import { UiButton } from "../../library/ui-button/ui-button";
 
 export interface toDoItem {
   id: number,
@@ -10,13 +11,27 @@ export interface toDoItem {
 
 @Component({
   selector: 'to-do-list',
-  imports: [ToDoListItem, FormsModule, TuiTextfield],
+  imports: [ToDoListItem, FormsModule, TuiTextfield, TuiLoader, UiButton],
   templateUrl: './to-do-list.html',
-  styleUrl: './to-do-list.scss'
+  styleUrl: './to-do-list.scss',
+  providers: [
+    tuiLoaderOptionsProvider({
+      size: 'l',
+      inheritColor: false,
+      overlay: true,
+    }),
+  ],
 })
-export class ToDoListComponent {
+export class ToDoList implements OnInit {
   protected list: toDoItem[] = [{id: 0, text: "Проснуться"}, {id: 1, text:  "Купить йогурт"}];
-  protected inputValue: string = "";
+  protected inputValue = "";
+  protected isLoading = true;
+
+  ngOnInit(): void {
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 500);
+  }
 
   protected deleteItem(index: number): void {
     this.list = this.list.filter((item: toDoItem) => item.id !== index);

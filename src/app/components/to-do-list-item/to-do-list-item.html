@@ -1,4 +1,4 @@
 <div class="item">
     <span>{{ item.text }}</span>
-    <button class="button button-delete" (click)="outDeleteEmitter(item.id)">Удалить</button>
+    <ui-button class="button button-delete" title="Удалить" (outClickEmitter)="outDeleteEmitter(item.id)" />
 </div>
