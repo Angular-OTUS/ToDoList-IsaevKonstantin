@@ -9,8 +9,8 @@ export const appConfig: ApplicationConfig = {
   providers: [
         provideAnimations(),
         provideBrowserGlobalErrorListeners(),
-    provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
-        provideEventPlugins()
-    ]
+        provideZoneChangeDetection({ eventCoalescing: true }),
+        provideRouter(routes),
+        provideEventPlugins(),
+    ],
 };

@@ -9,17 +9,4 @@
 .button-delete {
     width: 80px;
     height: 100%;
-    background-color: #ff8453;
-    border-radius: 5px;
-    color: white;
-    border: 0;
-
-
-    &:hover {
-        background-color: #ff5b1a;
-    }
-
-    &:active {
-        background-color: #ff9f79; 
-    }
 }

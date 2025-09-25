@@ -2,29 +2,33 @@
     <div class="header">
         <h1>Todo List</h1>
     </div>
-    <div class="body">
-        @if (list.length) {
-            <ul>
-                @for (item of list; track $index) {
-                    <li>
-                        <to-do-list-item [item]="item" (deleteItemEvent)="deleteItem($event)"></to-do-list-item>
-                    </li>
-                }
-            </ul>
-        } @else {
-            <p>Здесь может быть ваш список дел!</p>
-        }
-    </div>
-    <div class="footer">
-        <tui-textfield class="input" tuiTextfieldSize="m" [tuiTextfieldCleaner]="true">
-            <label tuiLabel>Новое дело:</label>
-            <input
-                tuiTextfield
-                placeholder="Введите новое дело..."
-                [(ngModel)]="inputValue"
-            />
-        </tui-textfield>
-        <button class="button button-add" [disabled]="!inputValue.length" (click)="addItem(inputValue)">Добавить</button>
-    </div>
+    @if (isLoading) {
+        <tui-loader [inheritColor]="true" />
+    } @else {
+        <div class="body">
+            @if (list.length) {
+                <ul>
+                    @for (item of list; track $index) {
+                        <li>
+                            <to-do-list-item [item]="item" (deleteItemEvent)="deleteItem($event)" />
+                        </li>
+                    }
+                </ul>
+            } @else {
+                <p>Здесь может быть ваш список дел!</p>
+            }
+        </div>
+        <div class="footer">
+            <tui-textfield class="input" tuiTextfieldSize="m" [tuiTextfieldCleaner]="true">
+                <label tuiLabel>Новое дело:</label>
+                <input
+                    tuiTextfield
+                    placeholder="Введите новое дело..."
+                    [(ngModel)]="inputValue"
+                />
+            </tui-textfield>
+            <ui-button class="button button-add" [class.disabled]="!inputValue.length" title="Добавить" (outClickEmitter)="addItem(inputValue)" />
+        </div>
+    }
 </div>
 

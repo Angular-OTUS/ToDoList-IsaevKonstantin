@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ToDoListItem } from './to-do-list-item';
+import { UiButton } from './ui-button';
 
-describe('ToDoListItem', () => {
-  let component: ToDoListItem;
-  let fixture: ComponentFixture<ToDoListItem>;
+describe('UiButton', () => {
+  let component: UiButton;
+  let fixture: ComponentFixture<UiButton>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ToDoListItem],
+      imports: [UiButton],
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ToDoListItem);
+    fixture = TestBed.createComponent(UiButton);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
