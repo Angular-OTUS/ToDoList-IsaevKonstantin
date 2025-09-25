@@ -9,7 +9,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrl: './ui-button.scss',
 })
 export class UiButton {
-  @Input() title!: string;
+  @Input() title?: string;
   @Output() outClickEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   public clickEmitter() {
