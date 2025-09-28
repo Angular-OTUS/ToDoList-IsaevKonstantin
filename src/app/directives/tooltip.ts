@@ -10,6 +10,7 @@ export class Tooltip implements OnDestroy {
     @Input() tooltipPos: TTooltopPos = "top";
 
     private tooltipElement?: HTMLElement;
+    private tooltipArrow?: HTMLElement;
 
     private get isDisabled(): boolean {
         return this.element.nativeElement.classList.contains('disabled');
@@ -48,46 +49,67 @@ export class Tooltip implements OnDestroy {
         this.renderer.setStyle(this.tooltipElement, 'zIndex', '100');
         this.renderer.setStyle(this.tooltipElement, 'opacity', '0');
         this.renderer.setStyle(this.tooltipElement, 'transition', 'opacity 0.3s ease-in-out');
+        
+        this.tooltipArrow = this.renderer.createElement('div') as HTMLElement;
+        this.renderer.setStyle(this.tooltipArrow, 'position', 'absolute');
+        this.renderer.setStyle(this.tooltipArrow, 'background', '#874e89ff');
+        this.renderer.setStyle(this.tooltipArrow, 'pointerEvents', 'none');
+        this.renderer.setStyle(this.tooltipArrow, 'zIndex', '100');
+        this.renderer.setStyle(this.tooltipArrow, 'opacity', '0');
+        this.renderer.setStyle(this.tooltipArrow, 'transition', 'opacity 0.5s ease-in-out');
+        this.renderer.setStyle(this.tooltipArrow, 'width', '5px');
+        this.renderer.setStyle(this.tooltipArrow, 'height', '5px');
+        this.renderer.setStyle(this.tooltipArrow, 'transform', 'rotate(45deg)');
+
         setTimeout(() => {
             if (this.tooltipElement) this.renderer.setStyle(this.tooltipElement, 'opacity', '1');
+            if (this.tooltipArrow) this.renderer.setStyle(this.tooltipArrow, 'opacity', '1');
         }, 300);
+
         this.renderer.appendChild(document.body, this.tooltipElement);
-        this.setTooltipPosition(this.tooltipElement);
+        this.renderer.appendChild(document.body, this.tooltipArrow);
+
+        this.setTooltipPosition(this.tooltipElement, 5);
+        this.setTooltipPosition(this.tooltipArrow, 2);
     }
 
-    private setTooltipPosition(tooltipElement: HTMLElement): void {
+    private setTooltipPosition(tooltip: HTMLElement, indentation: number): void {
         const hostPos = this.element.nativeElement.getBoundingClientRect();
         let top: number;
         let left: number;
         switch (this.tooltipPos) {
             case "top":
-                top = hostPos.top - window.scrollY - tooltipElement.offsetHeight - 2;
-                left = hostPos.left + hostPos.width / 2 - tooltipElement.offsetWidth / 2 + window.scrollX;
+                top = hostPos.top - window.scrollY - tooltip.offsetHeight - indentation;
+                left = hostPos.left + hostPos.width / 2 - tooltip.offsetWidth / 2 + window.scrollX;
                 break;
             case "bottom":
-                top = hostPos.bottom + window.scrollY + 2;
-                left = hostPos.left + hostPos.width / 2 - tooltipElement.offsetWidth / 2 + window.scrollX;
+                top = hostPos.bottom + window.scrollY + indentation;
+                left = hostPos.left + hostPos.width / 2 - tooltip.offsetWidth / 2 + window.scrollX;
                 break;
             case "left":
-                top = hostPos.top + hostPos.height / 2 - tooltipElement.offsetHeight / 2 + window.scrollY;
-                left = hostPos.left - tooltipElement.offsetWidth - window.scrollX - 2;
+                top = hostPos.top + hostPos.height / 2 - tooltip.offsetHeight / 2 + window.scrollY;
+                left = hostPos.left - window.scrollX - tooltip.offsetWidth - indentation;
                 break;
             case "right":
-                top = hostPos.top + hostPos.height / 2 - tooltipElement.offsetHeight / 2 + window.scrollY;
-                left = hostPos.right + window.scrollX + 2;
+                top = hostPos.top + hostPos.height / 2 - tooltip.offsetHeight / 2 + window.scrollY;
+                left = hostPos.right + window.scrollX + indentation;
                 break;
             default:
                 this.hideTooltip()
                 return;
         }
-        this.renderer.setStyle(this.tooltipElement, 'top', `${top}px`);
-        this.renderer.setStyle(this.tooltipElement, 'left', `${left}px`);
+        this.renderer.setStyle(tooltip, 'top', `${top}px`);
+        this.renderer.setStyle(tooltip, 'left', `${left}px`);
     }
 
     private hideTooltip(): void {
         if (this.tooltipElement) {
             this.renderer.removeChild(document.body, this.tooltipElement);
             this.tooltipElement = undefined;
+        }
+        if (this.tooltipArrow) {
+            this.renderer.removeChild(document.body, this.tooltipArrow);
+            this.tooltipArrow = undefined;
         }
     }
     
