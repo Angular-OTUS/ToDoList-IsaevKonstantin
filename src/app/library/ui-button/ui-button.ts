@@ -4,15 +4,16 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   selector: 'ui-button',
   imports: [],
   template: `
-    <button (click)="clickEmitter()">{{ title }}</button>
+    <button (click)="clickEmitter($event)">{{ title }}</button>
   `,
   styleUrl: './ui-button.scss',
 })
 export class UiButton {
   @Input() title?: string;
-  @Output() outClickEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() outClickEmitter: EventEmitter<Event> = new EventEmitter<Event>();
 
-  public clickEmitter() {
-    this.outClickEmitter.emit(true);
+  public clickEmitter(event: Event) {
+    event.stopPropagation();
+    this.outClickEmitter.emit(event);
   }
 }
