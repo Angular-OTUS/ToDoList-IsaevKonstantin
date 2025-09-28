@@ -1,4 +1,6 @@
 <div class="item">
-    <span>{{ item.text }}</span>
-    <ui-button class="button button-delete" title="Удалить" (outClickEmitter)="outDeleteEmitter(item.id)" />
+    <div tooltip tooltipText="Нажмите, чтобы посмотреть описание" tooltipPos="left" class="item-text" (click)="outSelecteEmitter(item.id)">
+        <span>{{ item.text }}</span>
+    </div>
+    <ui-button tooltip tooltipText="Нажмите, чтобы удалить" tooltipPos="right" class="button button-delete" title="Удалить" (outClickEmitter)="outDeleteEmitter(item.id)" />
 </div>
