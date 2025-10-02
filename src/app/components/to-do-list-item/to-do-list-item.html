@@ -1,6 +1,41 @@
 <div class="item">
-    <div tooltip tooltipText="Нажмите, чтобы посмотреть описание" tooltipPos="left" class="item-text" (click)="outSelecteEmitter(item.id)">
-        <span>{{ item.text }}</span>
-    </div>
-    <ui-button tooltip tooltipText="Нажмите, чтобы удалить" tooltipPos="right" class="button button-delete" title="Удалить" (outClickEmitter)="outDeleteEmitter(item.id)" />
+    @if (!isEdit) {
+        <div 
+            tooltip
+            tooltipText="Нажмите, чтобы посмотреть описание. Нажмите дважды, чтобы редактировать"
+            tooltipPos="left"
+            class="item-text"
+            (click)="outSelecteEmitter(item.id)"
+            (dblclick)="outEditEmitter(item.id)"
+        >
+            <span [style]="{fontWeight: 600}">{{ item.text }}</span>
+        </div>
+        <ui-button 
+            tooltip
+            tooltipText="Нажмите, чтобы удалить"
+            tooltipPos="right"
+            class="button button-delete"
+            title="Удалить"
+            (outClickEmitter)="outDeleteEmitter(item.id)"
+        />
+    } @else {
+        <div class="item-text">
+            <tui-textfield class="input" tuiTextfieldSize="s" [tuiTextfieldCleaner]="false">
+                <input
+                    tuiTextfield
+                    placeholder="Введите новый заголовок дела..."
+                    [(ngModel)]="textValue"
+                />
+            </tui-textfield>
+        </div>
+        <ui-button 
+            tooltip
+            tooltipText="Нажмите, чтобы сохранить изменения"
+            tooltipPos="right"
+            class="button button-add"
+            title="Сохранить"
+            (outClickEmitter)="outSaveEmitter(item.id, textValue)"
+        />
+    }
+
 </div>
