@@ -34,7 +34,6 @@ export class Tooltip implements OnDestroy {
         this.hideTooltip();
     }
 
-
     private createTooltip() {
         if (!this.tooltipText || this.isDisabled) return;
         this.tooltipElement = this.renderer.createElement('span') as HTMLElement;
@@ -43,6 +42,8 @@ export class Tooltip implements OnDestroy {
         this.renderer.setStyle(this.tooltipElement, 'background', '#874e89ff');
         this.renderer.setStyle(this.tooltipElement, 'color', '#fff');
         this.renderer.setStyle(this.tooltipElement, 'padding', '4px 8px');
+        this.renderer.setStyle(this.tooltipElement, 'max-width', '220px');
+        this.renderer.setStyle(this.tooltipElement, 'display', 'block');
         this.renderer.setStyle(this.tooltipElement, 'borderRadius', '5px');
         this.renderer.setStyle(this.tooltipElement, 'fontSize', '12px');
         this.renderer.setStyle(this.tooltipElement, 'pointerEvents', 'none');
@@ -69,7 +70,7 @@ export class Tooltip implements OnDestroy {
         this.renderer.appendChild(document.body, this.tooltipElement);
         this.renderer.appendChild(document.body, this.tooltipArrow);
 
-        this.setTooltipPosition(this.tooltipElement, 5);
+        this.setTooltipPosition(this.tooltipElement, 4);
         this.setTooltipPosition(this.tooltipArrow, 2);
     }
 

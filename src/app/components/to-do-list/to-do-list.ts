@@ -6,13 +6,12 @@ import { UiButton } from "../../library/ui-button/ui-button";
 import { TuiTextarea } from '@taiga-ui/kit';
 import { CommonModule } from '@angular/common';
 import { Tooltip } from '../../directives';
-
-export interface toDoItem {
-  id: number,
-  text: string,
-  description: string,
-  isShow: boolean,
-}
+import { NewToDoItem, ToDoItem } from '../../interfaces/interfaces';
+import { Observable, take, tap } from 'rxjs';
+import { select, Store } from '@ngrx/store';
+import { descriptionSelected, isEdit, isLoading, selectedItemId, toDoList } from '../../store/to-do-list-store/select';
+import { addItem, changeItem, deleteItem, editItem, getList, selectItem } from '../../store/to-do-list-store/action';
+import { ToastService } from '../../services/toast';
 
 @Component({
   selector: 'to-do-list',
@@ -30,53 +29,66 @@ export interface toDoItem {
 export class ToDoList implements OnInit {
   @ViewChild('bodyList') bodyList!: ElementRef<HTMLDivElement>;
 
-  protected list: toDoItem[] = [
-    {id: 0, text: "Проснуться", description: "Завтра рано вставать на работу, поэтому вважно успеть собраться, чтобы придти во ввремя.", isShow: false}, 
-    {id: 1, text:  "Купить йогурт", description: "Жена попросила купить йогурт, зайти в магазин после работы.", isShow: false},
-  ];
+  protected height = 0;
   protected textValue = "";
   protected descriptionValue = "";
-  protected selectedItemId: number | null = null;
-  protected isLoading = true;
-  protected height = 0;
+  protected descriptionNewValue = "";
+  protected list$!: Observable<ToDoItem[]>;
+  protected selectedItemId$!: Observable<number | null>;
+  protected isEdit$!: Observable<boolean>;
+  protected editedDescription$!: Observable<string>;
+  protected isLoading$!: Observable<boolean>;
+  
+  constructor(
+    private store: Store,
+    private toast: ToastService,
+  ) {}
 
   ngOnInit(): void {
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 500);
+    this.isLoading$ = this.store.pipe(select(isLoading));
+    this.isEdit$ = this.store.pipe(select(isEdit));
+    this.list$ = this.store.pipe(select(toDoList));
+    this.selectedItemId$ = this.store.pipe(select(selectedItemId));
+    this.editedDescription$ = this.store.pipe(select(descriptionSelected));
+    this.requestList();
   }
 
-  protected deleteItem(index: number): void {
-    if (index === this.selectedItemId) {
-      this.selectedItemId = null;
-    }
-    this.list = this.list.filter((item: toDoItem) => item.id !== index);
+  private requestList(): void {
+    this.toast.showToast("Загрузка дел...")
+    this.store.dispatch(getList());
   }
 
-  protected addItem(text: string, description: string): void {
-    if (text.trim()) {
-      const nextId: number = this.list.length ? Math.max(...this.list.map(item => item.id)) + 1 : 0;
-      this.list.push({
-        id: nextId,
-        text: text,
-        description: description,
-        isShow: false,
-      })
-      this.textValue = "";
-      this.descriptionValue = "";
-    }
+  protected deleteItem(id: number): void {
+    this.toast.showToast("Удаление дела...")
+    this.store.dispatch(deleteItem({id: id}));
+  }
+
+  protected addItem(newItem: NewToDoItem): void {
+    this.toast.showToast("Добавление нового дела...")
+    this.store.dispatch(addItem({item: newItem}));
+    this.textValue = "";
+    this.descriptionValue = "";
   }
 
   protected selectItem(id: number): void {
-    if (id === this.selectedItemId) {
-      this.selectedItemId = null;
-    } else {
-      this.selectedItemId = id;
-      this.height = this.bodyList.nativeElement.offsetHeight - 1;
-    }
+    this.store.dispatch(selectItem({id: id}));
+    this.height = this.bodyList.nativeElement.offsetHeight - 12;
   }
 
-  protected getDescription(id: number | null): string {
-    return this.list.find((item: toDoItem) => item.id  === id)?.description || "";
+  protected editItem(id: number): void {
+    this.store.dispatch(editItem({id: id}));
+    this.height = this.bodyList.nativeElement.offsetHeight - 12;
+    this.editedDescription$.pipe(
+      take(1),
+      tap((text) => {
+        this.descriptionNewValue = text;
+      }),
+    ).subscribe();
+  }
+
+  protected saveItem(event: ToDoItem, description: string): void {
+    this.toast.showToast("Сохранение дела...")
+    event.description = description;
+    this.store.dispatch(changeItem({item: event}));
   }
 }

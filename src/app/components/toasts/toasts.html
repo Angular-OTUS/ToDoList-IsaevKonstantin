@@ -1,0 +1,5 @@
+<div class="toast-container">
+      @for (msg of messages$ | async; track $index) {
+        <div class="toast">{{ msg }}</div>
+      }
+</div>

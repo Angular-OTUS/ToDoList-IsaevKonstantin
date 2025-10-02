@@ -1,18 +1,26 @@
-<div class="container" [class.container-open]="selectedItemId !== null">
+<div class="container" [class.container-open]="(selectedItemId$ | async) !== null">
     <div class="header">
         <h1>Todo List</h1>
     </div>
-    @if (isLoading) {
+    @if (isLoading$ | async) {
         <tui-loader [inheritColor]="true" />
     } @else {
         <div class="list">
-            <div #bodyList [class.list-body]="selectedItemId !== null">
+            <div #bodyList [class.list-body]="(selectedItemId$ | async) !== null">
                 <div class="body">
-                    @if (list.length) {
+                    @if ((list$ | async)?.length) {
                         <ul>
-                            @for (item of list; track item.id) {
+                            @for (item of list$ | async; track item.id) {
                                 <li>
-                                    <to-do-list-item [class.selected]="selectedItemId === $index" [item]="item" (deleteItemEvent)="deleteItem($event)" (selectItemEvent)="selectItem($event)" />
+                                    <to-do-list-item 
+                                        [class.selected]="(selectedItemId$ | async) === item.id"
+                                        [item]="item"
+                                        [isEdit]="(selectedItemId$ | async) === item.id && !!(isEdit$ | async)"
+                                        (deleteItemEvent)="deleteItem($event)"
+                                        (selectItemEvent)="selectItem($event)"
+                                        (editItemEvent)="editItem($event)"
+                                        (saveItemEvent)="saveItem($event, descriptionNewValue)"
+                                    />
                                 </li>
                             }
                         </ul>
@@ -39,14 +47,35 @@
                             ></textarea>
                         </tui-textfield>
                     </tui-expand>
-                    <ui-button tooltip tooltipText="Нажмите, чтобы добавить" tooltipPos="bottom" class="button button-add" [class.disabled]="!textValue.length" title="Добавить" (outClickEmitter)="addItem(textValue, descriptionValue)" />
+                    <ui-button
+                        tooltip
+                        tooltipText="Нажмите, чтобы добавить"
+                        tooltipPos="bottom"
+                        class="button button-add"
+                        [class.disabled]="!textValue.length"
+                        title="Добавить"
+                        (outClickEmitter)="addItem({text: textValue, description: descriptionValue})"
+                    />
                 </div>
             </div>
-            <tui-expand [expanded]="selectedItemId !== null">
-                <div class="list-description" [ngStyle]="{'height': height + 'px'}">
-                    <tui-scrollbar>
-                        <span>{{ !!getDescription(selectedItemId) ? getDescription(selectedItemId) : "Описания нет" }}</span>
-                    </tui-scrollbar>
+            <tui-expand [expanded]="(selectedItemId$ | async) !== null">
+                <div class="list-description" [class.edited]="isEdit$ | async" [ngStyle]="{'height.px': height}">
+                    @if ((isEdit$ | async) === false) {
+                        <tui-scrollbar>
+                            <span [style]="{fontWeight: 600}">Описание:</span><br>
+                            <span>{{ editedDescription$ | async }}</span>
+                        </tui-scrollbar>
+                    } @else {
+                        <tui-textfield class="textarea-edit" tuiTextfieldSize="m" [tuiTextfieldCleaner]="false">
+                            <label tuiLabel>Описание:</label>
+                            <textarea
+                                tuiTextarea
+                                placeholder="Введите новое описание дела..."
+                                [(ngModel)]="descriptionNewValue"
+                            ></textarea>
+                        </tui-textfield>
+                    }
+
                 </div>
             </tui-expand>
         </div>

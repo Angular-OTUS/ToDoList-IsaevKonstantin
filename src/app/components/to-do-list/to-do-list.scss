@@ -21,7 +21,6 @@
 
 .header {
     height: 50px;
-    border-bottom: 1px solid #92fbff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -36,9 +35,10 @@
     }
 
     &-description {
-        width: 215px;
-        padding-left: 5px;
+        width: 210px;
+        padding: 5px;
         border-bottom: 1px solid #92fbff;
+        border-top: 1px solid #92fbff;
         background-color: rgba(157, 255, 255, 0.250);
     }
 }
@@ -49,6 +49,7 @@
     width: 400px;
     background-color: rgba(157, 255, 255, 0.250);
     border-bottom: 1px solid #92fbff;
+    border-top: 1px solid #92fbff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -79,6 +80,17 @@ ul {
     width: 380px;
     margin-bottom: 5px;
     height: 90px;
+}
+
+.edited {
+    background-color: rgba(46, 255, 255, 0.150);
+    border: 1px solid rgb(46, 255, 255);
+    border-radius: 5px;
+}
+
+.textarea-edit {
+    width: 100%;
+    height: 100%;
 }
 
 .button {
