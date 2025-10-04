@@ -21,7 +21,7 @@ export class ToDoListItem {
 
   protected textValue = "";
 
-  private clickTimeout: any;
+  private clickTimeout?: number;
   
   protected outDeleteEmitter(id: number): void {
     this.deleteItemEvent.emit(id);
