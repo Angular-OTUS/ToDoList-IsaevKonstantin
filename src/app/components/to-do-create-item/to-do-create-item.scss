@@ -1,0 +1,24 @@
+form {
+    padding-top: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.input {
+    width: 380px;
+    height: 45px;
+    margin-bottom: 5px;
+}
+
+.textarea {
+    width: 380px;
+    margin-bottom: 5px;
+    height: 90px;
+}
+
+.button {
+    width: 100px;
+    height: 40px;
+}

@@ -3,23 +3,36 @@
         <h1>Todo List</h1>
     </div>
     @if (isLoading$ | async) {
-        <tui-loader [inheritColor]="true" />
+        <ui-spinner [inheritColor]="true" />
     } @else {
         <div class="list">
             <div #bodyList [class.list-body]="(selectedItemId$ | async) !== null">
+                <div class="filters">
+                    <tui-radio-list
+                        size="s"
+                        [formControl]="statusFilterControl"
+                        [items]="statusOptions"
+                        [style.flex-direction]="'row'"
+                        [style.width]="'max-content'"
+                    />
+                </div>
                 <div class="body">
                     @if ((list$ | async)?.length) {
                         <ul>
                             @for (item of list$ | async; track item.id) {
                                 <li>
                                     <to-do-list-item 
+                                        tooltip
+                                        tooltipText="Нажмите, чтобы посмотреть описание. Нажмите дважды, чтобы редактировать"
+                                        tooltipPos="left"
                                         [class.selected]="(selectedItemId$ | async) === item.id"
                                         [item]="item"
                                         [isEdit]="(selectedItemId$ | async) === item.id && !!(isEdit$ | async)"
                                         (deleteItemEvent)="deleteItem($event)"
                                         (selectItemEvent)="selectItem($event)"
                                         (editItemEvent)="editItem($event)"
-                                        (saveItemEvent)="saveItem($event, descriptionNewValue)"
+                                        (saveItemEvent)="saveItem($event)"
+                                        (changeStatusEvent)="changeStatusItem($event)"
                                     />
                                 </li>
                             }
@@ -29,33 +42,7 @@
                     }
                 </div>
                 <div class="footer">
-                    <tui-textfield class="input" tuiTextfieldSize="m" [tuiTextfieldCleaner]="true">
-                        <label tuiLabel>Новое дело:</label>
-                        <input
-                            tuiTextfield
-                            placeholder="Введите новое дело..."
-                            [(ngModel)]="textValue"
-                        />
-                    </tui-textfield>
-                    <tui-expand [expanded]="!!textValue.length">
-                        <tui-textfield class="textarea" tuiTextfieldSize="m" [tuiTextfieldCleaner]="true">
-                            <label tuiLabel>Описание:</label>
-                            <textarea
-                                tuiTextarea
-                                placeholder="Введите описание нового дела..."
-                                [(ngModel)]="descriptionValue"
-                            ></textarea>
-                        </tui-textfield>
-                    </tui-expand>
-                    <ui-button
-                        tooltip
-                        tooltipText="Нажмите, чтобы добавить"
-                        tooltipPos="bottom"
-                        class="button button-add"
-                        [class.disabled]="!textValue.length"
-                        title="Добавить"
-                        (outClickEmitter)="addItem({text: textValue, description: descriptionValue})"
-                    />
+                    <to-do-create-item (addNewItemEvent)="addItem($event)"></to-do-create-item>
                 </div>
             </div>
             <tui-expand [expanded]="(selectedItemId$ | async) !== null">
@@ -71,7 +58,7 @@
                             <textarea
                                 tuiTextarea
                                 placeholder="Введите новое описание дела..."
-                                [(ngModel)]="descriptionNewValue"
+                                [formControl]="textareaControl"
                             ></textarea>
                         </tui-textfield>
                     }

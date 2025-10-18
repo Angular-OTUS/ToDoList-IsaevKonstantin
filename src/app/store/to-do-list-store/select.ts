@@ -1,5 +1,6 @@
 import { createFeatureSelector, createSelector } from "@ngrx/store";
 import { ToDoListState } from "./state";
+import { EStatus } from "../../enums/status";
 
 export const selectToDoListState = createFeatureSelector<ToDoListState>('toDoList');
 
@@ -10,7 +11,10 @@ export const isLoading = createSelector(
 
 export const toDoList = createSelector(
   selectToDoListState,
-  (state) => state.list
+  (state) => {
+    if (state.filterStatus !== EStatus.All) return state.list.filter((item) => item.status === state.filterStatus);
+    return state.list;
+  },
 );
 
 export const selectedItemId = createSelector(

@@ -1,0 +1,32 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <tui-textfield class="input" tuiTextfieldSize="m" [tuiTextfieldCleaner]="true">
+        <label tuiLabel for="todoText">Новое дело:</label>
+        <input
+            tuiTextfield
+            id="todoText"
+            placeholder="Введите новое дело..."
+            formControlName="text"
+        />
+    </tui-textfield>
+    <tui-expand [expanded]="!!form.get('text')?.valid && !!form.get('text')?.dirty">
+        <tui-textfield class="textarea" tuiTextfieldSize="m" [tuiTextfieldCleaner]="true">
+            <label tuiLabel for="todoDescription">Описание:</label>
+            <textarea
+                tuiTextarea
+                id="todoDescription"
+                placeholder="Введите описание нового дела..."
+                formControlName="description"
+            ></textarea>
+        </tui-textfield>
+    </tui-expand>
+    <ui-button
+        tooltip
+        tooltipText="Нажмите, чтобы добавить"
+        tooltipPos="bottom"
+        class="button button-add"
+        type="submit"
+        [class.disabled]="form.invalid"
+    >
+        Добавить
+    </ui-button>
+</form>

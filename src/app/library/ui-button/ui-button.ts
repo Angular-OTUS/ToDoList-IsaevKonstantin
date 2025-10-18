@@ -1,15 +1,12 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'ui-button',
   imports: [],
-  template: `
-    <button (click)="clickEmitter($event)">{{ title }}</button>
-  `,
+  templateUrl: './ui-button.html',
   styleUrl: './ui-button.scss',
 })
 export class UiButton {
-  @Input() title?: string;
   @Output() outClickEmitter: EventEmitter<Event> = new EventEmitter<Event>();
 
   public clickEmitter(event: Event) {
