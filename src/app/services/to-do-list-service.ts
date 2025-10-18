@@ -1,8 +1,7 @@
 import { DestroyRef, inject, Injectable } from "@angular/core";
-import { INewToDoItem, IToDoItem } from "../interfaces/interfaces";
+import { IChStatusToDoItem, INewToDoItem, IToDoItem } from "../interfaces/interfaces";
 import { delay, map, Observable, } from "rxjs";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-import { TStatus } from "../types/types";
 import { HttpClient } from "@angular/common/http";
 
 @Injectable({
@@ -48,8 +47,8 @@ export class ToDoListService {
         );
     }
 
-    public changeItemStatus(id: number, status: TStatus): Observable<boolean> {
-        return this.http.patch<IToDoItem>(`${this.apiUrl}/${id}`, {status}).pipe(
+    public changeItemStatus(item: IChStatusToDoItem): Observable<boolean> {
+        return this.http.patch<IToDoItem>(`${this.apiUrl}/${item.id}`, {status: item.status}).pipe(
             takeUntilDestroyed(this.destroyRef), 
             delay(500),
             map((item) => !!item),

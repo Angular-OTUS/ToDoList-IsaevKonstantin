@@ -7,7 +7,8 @@ export interface IToDoItem {
   status: TStatus,
 }
 
-export interface INewToDoItem {
-  text: string,
-  description: string,
-}
+export type INewToDoItem = Pick<IToDoItem, "text" | "description">;
+
+export type ISaveToDoItem = Omit<IToDoItem, "description">;
+
+export type IChStatusToDoItem = Pick<IToDoItem, "id" | "status">;

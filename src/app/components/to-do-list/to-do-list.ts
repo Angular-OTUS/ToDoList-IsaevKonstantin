@@ -5,14 +5,13 @@ import { TuiExpand, TuiScrollbar, TuiTextfield } from '@taiga-ui/core';
 import { TuiRadioList, TuiTextarea } from '@taiga-ui/kit';
 import { CommonModule } from '@angular/common';
 import { Tooltip } from '../../directives';
-import { INewToDoItem, IToDoItem } from '../../interfaces/interfaces';
+import { IChStatusToDoItem, INewToDoItem, ISaveToDoItem, IToDoItem } from '../../interfaces/interfaces';
 import { Observable, take, tap } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 import { descriptionSelected, isEdit, isLoading, selectedItemId, toDoList } from '../../store/to-do-list-store/select';
 import { addItem, changeItem, changeItemStatus, deleteItem, editItem, getList, selectItem, switchStatusFilter } from '../../store/to-do-list-store/action';
 import { ToastService } from '../../services/toast';
 import { UiSpinner } from '../../library/ui-spinner/ui-spinner';
-import { TStatus } from '../../types/types';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { EStatus } from '../../enums/status';
 import { ToDoCreateItem } from "../to-do-create-item/to-do-create-item";
@@ -93,7 +92,7 @@ export class ToDoList implements OnInit {
     ).subscribe();
   }
 
-  protected saveItem(data: {id: number, text: string, status: TStatus}): void {
+  protected saveItem(data: ISaveToDoItem): void {
     this.toast.showToast("Сохранение дела...")
     const saveItem: IToDoItem = {
       id: data.id,
@@ -104,7 +103,7 @@ export class ToDoList implements OnInit {
     this.store.dispatch(changeItem({item: saveItem}));
   }
 
-  protected changeStatusItem(data: {id: number, status: TStatus}): void {
-    this.store.dispatch(changeItemStatus({id: data.id, status: data.status}));
+  protected changeStatusItem(data: IChStatusToDoItem): void {
+    this.store.dispatch(changeItemStatus({item: {id: data.id, status: data.status}}));
   }
 }

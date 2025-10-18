@@ -1,6 +1,6 @@
 import { inject, Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { catchError, map, of, startWith, switchMap, tap, withLatestFrom } from "rxjs";
+import { catchError, of, startWith, switchMap, tap, withLatestFrom } from "rxjs";
 import {
     getList, setList, isLoadingList,
     addItem, isAddItem,
@@ -118,9 +118,9 @@ export class ToDoEffects {
         this.actions$.pipe(
             ofType(changeItemStatus),
             withLatestFrom(this.store.pipe(select(toDoList))),
-            switchMap(([{id, status}, list]) => {
-                if (list.find((item) => item.id === id)?.status === status) return of(false);
-                return this.toDoService.changeItemStatus(id, status);
+            switchMap(([{item}, list]) => {
+                if (list.find((listItem) => listItem.id === item.id)?.status === item.status) return of(false);
+                return this.toDoService.changeItemStatus(item);
             }),
             tap((result) => {
                 this.toast.showToast(result ? "Статус успешно изменен!" : "Статус не изменился!");

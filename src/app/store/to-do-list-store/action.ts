@@ -1,6 +1,5 @@
 import { createAction, props } from "@ngrx/store";
-import { INewToDoItem, IToDoItem } from "../../interfaces/interfaces";
-import { TStatus } from "../../types/types";
+import { IChStatusToDoItem, INewToDoItem, IToDoItem } from "../../interfaces/interfaces";
 import { EStatus } from "../../enums/status";
 
 
@@ -16,6 +15,6 @@ export const isDeleteItem = createAction('[ToDoList] Is Delete Item', props<{isL
 export const deleteItem = createAction('[ToDoList] Delete Item' , props<{id: number}>());
 export const isChangeItem = createAction('[ToDoList] Is Change Item', props<{isLoading: boolean}>());
 export const changeItem = createAction('[ToDoList] Change Item', props<{item: IToDoItem}>());
-export const changeItemStatus = createAction('[ToDoList] Change Item Status', props<{id: number, status: TStatus}>());
+export const changeItemStatus = createAction('[ToDoList] Change Item Status', props<{item: IChStatusToDoItem}>());
 export const switchStatusFilter = createAction('[ToDoList] Switch Status Filter', props<{status: EStatus.All | EStatus.Completed | EStatus.InProgress}>());
 

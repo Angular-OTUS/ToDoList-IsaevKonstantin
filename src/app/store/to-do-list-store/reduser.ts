@@ -1,7 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
 import { initialState } from "./state";
-import { setList, isLoadingList, selectItem, editItem, isAddItem, isDeleteItem, isChangeItem, changeItem, deleteItem, changeItemStatus, switchStatusFilter } from "./action";
-import { IToDoItem } from "../../interfaces/interfaces";
+import { setList, isLoadingList, selectItem, editItem, isAddItem, isDeleteItem, isChangeItem, changeItem, deleteItem, switchStatusFilter, changeItemStatus } from "./action";
 
 
 export const toDoListReducer = createReducer(
@@ -19,4 +18,11 @@ export const toDoListReducer = createReducer(
     on(isChangeItem, (state, {isLoading}) => ({...state, isChange: isLoading})),
     on(changeItem, (state) => ({...state, isEdit: false})),
     on(switchStatusFilter, (state, {status}) => ({...state, filterStatus: status})),
+    on(changeItemStatus, (state, {item}) => {
+        const newList = [...state.list].map((listItem) => {
+            if (listItem.id === item.id) return {...listItem, status: item.status};
+            return listItem;
+        });
+        return {...state, list: newList};
+    }),
 )

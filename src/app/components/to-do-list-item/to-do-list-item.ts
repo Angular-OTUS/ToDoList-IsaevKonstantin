@@ -1,11 +1,10 @@
 import { Component, DestroyRef, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { UiButton } from '../../library/ui-button/ui-button';
 import { Tooltip } from '../../directives';
-import { IToDoItem } from '../../interfaces/interfaces';
+import { IChStatusToDoItem, ISaveToDoItem, IToDoItem } from '../../interfaces/interfaces';
 import { TuiTextfield } from '@taiga-ui/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TuiCheckbox } from '@taiga-ui/kit';
-import { TStatus } from '../../types/types';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { debounceTime } from 'rxjs';
 import { EStatusInfo } from '../../enums/status';
@@ -22,8 +21,8 @@ export class ToDoListItem implements OnInit {
   @Output() deleteItemEvent: EventEmitter<number> = new EventEmitter<number>();
   @Output() selectItemEvent: EventEmitter<number> = new EventEmitter<number>();
   @Output() editItemEvent: EventEmitter<number> = new EventEmitter<number>();
-  @Output() saveItemEvent: EventEmitter<{id: number, text: string, status: TStatus}> = new EventEmitter<{id: number, text: string, status: TStatus}>();
-  @Output() changeStatusEvent: EventEmitter<{id: number, status: TStatus}> = new EventEmitter<{id: number, status: TStatus}>();
+  @Output() saveItemEvent: EventEmitter<ISaveToDoItem> = new EventEmitter<ISaveToDoItem>();
+  @Output() changeStatusEvent: EventEmitter<IChStatusToDoItem> = new EventEmitter<IChStatusToDoItem>();
   
   private clickTimeout?: number;
   private readonly destroyRef = inject(DestroyRef);
@@ -35,8 +34,16 @@ export class ToDoListItem implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
+    this.initControlsValue();
+    this.statusChangeSub();
+  }
+
+  private initControlsValue(): void {
     this.textControl.setValue(this.item.text);
     this.statusControl.setValue(this.eStatusInfo[this.item.status].value);
+  }
+
+  private statusChangeSub(): void {
     this.statusControl.valueChanges.pipe(
       takeUntilDestroyed(this.destroyRef), 
       debounceTime(500),
