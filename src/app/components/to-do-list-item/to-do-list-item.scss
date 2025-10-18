@@ -23,7 +23,7 @@
     }
 
     &-text {
-        width: calc(100% - 85px);
+        width: calc(100% - 110px);
         height: 100%;
         display: flex;
         align-items: center;
@@ -37,4 +37,10 @@
 .button {
     width: 80px;
     height: 25px;
+}
+
+.checkbox {
+    height: 100%;
+    display: flex;
+    align-items: center;
 }

@@ -1,12 +1,17 @@
 <div class="item">
     @if (!isEdit) {
+        <div class="checkbox">
+            <input
+                tuiCheckbox
+                type="checkbox"
+                size="s"
+                [formControl]="statusControl"
+            />
+        </div>
         <div 
-            tooltip
-            tooltipText="Нажмите, чтобы посмотреть описание. Нажмите дважды, чтобы редактировать"
-            tooltipPos="left"
             class="item-text"
-            (click)="outSelecteEmitter(item.id)"
-            (dblclick)="outEditEmitter(item.id)"
+            (click)="outSelecteEmitter()"
+            (dblclick)="outEditEmitter()"
         >
             <span [style]="{fontWeight: 600}">{{ item.text }}</span>
         </div>
@@ -15,16 +20,25 @@
             tooltipText="Нажмите, чтобы удалить"
             tooltipPos="right"
             class="button button-delete"
-            title="Удалить"
-            (outClickEmitter)="outDeleteEmitter(item.id)"
-        />
+            (outClickEmitter)="outDeleteEmitter()"
+        >
+            <span>Удалить</span>
+        </ui-button>
     } @else {
+        <div class="checkbox">
+            <input
+                tuiCheckbox
+                type="checkbox"
+                size="s"
+                [formControl]="statusControl"
+            />
+        </div>
         <div class="item-text">
             <tui-textfield class="input" tuiTextfieldSize="s" [tuiTextfieldCleaner]="false">
                 <input
                     tuiTextfield
                     placeholder="Введите новый заголовок дела..."
-                    [(ngModel)]="textValue"
+                    [formControl]="textControl"
                 />
             </tui-textfield>
         </div>
@@ -33,9 +47,9 @@
             tooltipText="Нажмите, чтобы сохранить изменения"
             tooltipPos="right"
             class="button button-add"
-            title="Сохранить"
-            (outClickEmitter)="outSaveEmitter(item.id, textValue)"
-        />
+            (outClickEmitter)="outSaveEmitter()"
+        >
+            <span>Сохранить</span>
+        </ui-button>
     }
-
 </div>

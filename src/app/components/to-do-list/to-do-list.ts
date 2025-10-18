@@ -1,43 +1,47 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, DestroyRef, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ToDoListItem } from '../to-do-list-item/to-do-list-item';
-import { TuiExpand, TuiLoader, tuiLoaderOptionsProvider, TuiScrollbar, TuiTextfield } from '@taiga-ui/core';
-import { UiButton } from "../../library/ui-button/ui-button";
-import { TuiTextarea } from '@taiga-ui/kit';
+import { TuiExpand, TuiScrollbar, TuiTextfield } from '@taiga-ui/core';
+import { TuiRadioList, TuiTextarea } from '@taiga-ui/kit';
 import { CommonModule } from '@angular/common';
 import { Tooltip } from '../../directives';
-import { NewToDoItem, ToDoItem } from '../../interfaces/interfaces';
+import { INewToDoItem, IToDoItem } from '../../interfaces/interfaces';
 import { Observable, take, tap } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 import { descriptionSelected, isEdit, isLoading, selectedItemId, toDoList } from '../../store/to-do-list-store/select';
-import { addItem, changeItem, deleteItem, editItem, getList, selectItem } from '../../store/to-do-list-store/action';
+import { addItem, changeItem, changeItemStatus, deleteItem, editItem, getList, selectItem, switchStatusFilter } from '../../store/to-do-list-store/action';
 import { ToastService } from '../../services/toast';
+import { UiSpinner } from '../../library/ui-spinner/ui-spinner';
+import { TStatus } from '../../types/types';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { EStatus } from '../../enums/status';
+import { ToDoCreateItem } from "../to-do-create-item/to-do-create-item";
 
 @Component({
   selector: 'to-do-list',
-  imports: [ToDoListItem, FormsModule, TuiTextfield, TuiTextarea, TuiLoader, TuiExpand, TuiScrollbar, UiButton, Tooltip, CommonModule],
+  imports: [ToDoListItem, ToDoCreateItem, UiSpinner, Tooltip, CommonModule, ReactiveFormsModule, TuiTextfield, TuiRadioList, TuiTextarea, TuiExpand, TuiScrollbar],
   templateUrl: './to-do-list.html',
   styleUrl: './to-do-list.scss',
-  providers: [
-    tuiLoaderOptionsProvider({
-      size: 'l',
-      inheritColor: false,
-      overlay: true,
-    }),
-  ],
 })
 export class ToDoList implements OnInit {
   @ViewChild('bodyList') bodyList!: ElementRef<HTMLDivElement>;
 
+  private readonly destroyRef = inject(DestroyRef);
+  
   protected height = 0;
-  protected textValue = "";
-  protected descriptionValue = "";
-  protected descriptionNewValue = "";
-  protected list$!: Observable<ToDoItem[]>;
+  protected list$!: Observable<IToDoItem[]>;
   protected selectedItemId$!: Observable<number | null>;
   protected isEdit$!: Observable<boolean>;
   protected editedDescription$!: Observable<string>;
   protected isLoading$!: Observable<boolean>;
+  protected textareaControl: FormControl<string> = new FormControl<string>("", {nonNullable: true});
+  protected statusFilterControl = new FormControl<EStatus>(EStatus.All, { nonNullable: true });
+  protected readonly eStatus = EStatus;
+  protected statusOptions = [
+    this.eStatus.All,
+    this.eStatus.InProgress,
+    this.eStatus.Completed,
+  ];
   
   constructor(
     private store: Store,
@@ -50,6 +54,11 @@ export class ToDoList implements OnInit {
     this.list$ = this.store.pipe(select(toDoList));
     this.selectedItemId$ = this.store.pipe(select(selectedItemId));
     this.editedDescription$ = this.store.pipe(select(descriptionSelected));
+    this.statusFilterControl.valueChanges.pipe(
+      takeUntilDestroyed(this.destroyRef),
+    ).subscribe((value) => {
+      this.store.dispatch(switchStatusFilter({status: value}));
+    });
     this.requestList();
   }
 
@@ -63,11 +72,9 @@ export class ToDoList implements OnInit {
     this.store.dispatch(deleteItem({id: id}));
   }
 
-  protected addItem(newItem: NewToDoItem): void {
+  protected addItem(newItem: INewToDoItem): void {
     this.toast.showToast("Добавление нового дела...")
     this.store.dispatch(addItem({item: newItem}));
-    this.textValue = "";
-    this.descriptionValue = "";
   }
 
   protected selectItem(id: number): void {
@@ -81,14 +88,23 @@ export class ToDoList implements OnInit {
     this.editedDescription$.pipe(
       take(1),
       tap((text) => {
-        this.descriptionNewValue = text;
+        this.textareaControl.setValue(text);
       }),
     ).subscribe();
   }
 
-  protected saveItem(event: ToDoItem, description: string): void {
+  protected saveItem(data: {id: number, text: string, status: TStatus}): void {
     this.toast.showToast("Сохранение дела...")
-    event.description = description;
-    this.store.dispatch(changeItem({item: event}));
+    const saveItem: IToDoItem = {
+      id: data.id,
+      text: data.text,
+      description: this.textareaControl.value,
+      status: data.status,
+    };
+    this.store.dispatch(changeItem({item: saveItem}));
+  }
+
+  protected changeStatusItem(data: {id: number, status: TStatus}): void {
+    this.store.dispatch(changeItemStatus({id: data.id, status: data.status}));
   }
 }

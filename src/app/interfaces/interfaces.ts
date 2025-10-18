@@ -1,10 +1,13 @@
-export interface ToDoItem {
+import { TStatus } from "../types/types";
+
+export interface IToDoItem {
   id: number,
   text: string,
   description: string,
+  status: TStatus,
 }
 
-export interface NewToDoItem {
+export interface INewToDoItem {
   text: string,
   description: string,
 }

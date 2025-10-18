@@ -1,14 +1,16 @@
-import { ToDoItem } from "../../interfaces/interfaces";
+import { EStatus } from "../../enums/status";
+import { IToDoItem } from "../../interfaces/interfaces";
 
 
 export interface ToDoListState {
     isLoad: boolean,
-    list: ToDoItem[],
+    list: IToDoItem[],
     selectedItem: number | null,
     isEdit: boolean,
     isAdd: boolean,
     isDelete: boolean,
     isChange: boolean,
+    filterStatus: EStatus.All | EStatus.Completed | EStatus.InProgress,
 }
 
 export const initialState: ToDoListState = {
@@ -19,4 +21,5 @@ export const initialState: ToDoListState = {
     isAdd: false,
     isDelete: false,
     isChange: false,
+    filterStatus: EStatus.All,
 }

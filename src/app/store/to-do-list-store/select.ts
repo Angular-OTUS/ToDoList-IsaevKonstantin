@@ -10,7 +10,11 @@ export const isLoading = createSelector(
 
 export const toDoList = createSelector(
   selectToDoListState,
-  (state) => state.list
+  (state) => {
+    if (state.filterStatus === "Completed") return state.list.filter((item) => item.status === "Completed");
+    if (state.filterStatus === "InProgress") return state.list.filter((item) => item.status === "InProgress");
+    return state.list;
+  },
 );
 
 export const selectedItemId = createSelector(
