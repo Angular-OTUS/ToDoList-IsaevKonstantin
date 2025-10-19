@@ -4,7 +4,7 @@
       "id": "0",
       "text": "Проснуться",
       "description": "Завтра рано вставать на работу, поэтому вважно успеть собраться, чтобы придти во ввремя.",
-      "status": "InProgress"
+      "status": "Completed"
     },
     {
       "id": "1",
@@ -14,9 +14,9 @@
     },
     {
       "id": "4",
-      "text": "Погулять",
-      "description": "В парке",
-      "status": "InProgress"
+      "text": "Погулять 1",
+      "status": "InProgress",
+      "description": "aaaaaa"
     }
   ]
 }

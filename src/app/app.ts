@@ -1,11 +1,11 @@
 import { Component, signal } from '@angular/core';
-import { ToDoList } from './components/to-do-list/to-do-list';
 import { TuiRoot } from '@taiga-ui/core';
 import { Toasts } from "./components/toasts/toasts";
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [ToDoList, TuiRoot, Toasts],
+  imports: [TuiRoot, Toasts, RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })

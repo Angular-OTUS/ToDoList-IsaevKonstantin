@@ -9,7 +9,12 @@ export const isLoading = createSelector(
   (state) => (state.isLoad || state.isAdd || state.isChange || state.isDelete)
 );
 
-export const toDoList = createSelector(
+export const allToDoList = createSelector(
+  selectToDoListState,
+  (state) => state.list,
+);
+
+export const filteredToDoList = createSelector(
   selectToDoListState,
   (state) => {
     if (state.filterStatus !== EStatus.All) return state.list.filter((item) => item.status === state.filterStatus);
@@ -17,21 +22,12 @@ export const toDoList = createSelector(
   },
 );
 
-export const selectedItemId = createSelector(
-  selectToDoListState,
-  (state) => state.selectedItem
-);
-
 export const isEdit = createSelector(
   selectToDoListState,
-  (state) => state.isEdit
+  (state) => state.isEdit,
 );
 
-export const descriptionSelected = createSelector(
+export const newDescription = createSelector(
   selectToDoListState,
-  (state) => {
-    return state.list.length && state.selectedItem !== null ? 
-      state.list.find((listItem) => listItem.id === state.selectedItem)!.description || "Описания нет"
-      : "Описания нет";
-  }
+  (state) => state.newDescription,
 );

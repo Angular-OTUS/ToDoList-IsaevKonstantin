@@ -1,4 +1,4 @@
-<div class="container" [class.container-open]="(selectedItemId$ | async) !== null">
+<div class="container" [class.container-open]="SelectedId !== null">
     <div class="header">
         <h1>Todo List</h1>
     </div>
@@ -6,7 +6,7 @@
         <ui-spinner [inheritColor]="true" />
     } @else {
         <div class="list">
-            <div #bodyList [class.list-body]="(selectedItemId$ | async) !== null">
+            <div [class.list-body]="SelectedId !== null">
                 <div class="filters">
                     <tui-radio-list
                         size="s"
@@ -25,9 +25,9 @@
                                         tooltip
                                         tooltipText="Нажмите, чтобы посмотреть описание. Нажмите дважды, чтобы редактировать"
                                         tooltipPos="left"
-                                        [class.selected]="(selectedItemId$ | async) === item.id"
+                                        [class.selected]="SelectedId === item.id"
                                         [item]="item"
-                                        [isEdit]="(selectedItemId$ | async) === item.id && !!(isEdit$ | async)"
+                                        [isEdit]="SelectedId === item.id && !!(isEdit$ | async)"
                                         (deleteItemEvent)="deleteItem($event)"
                                         (selectItemEvent)="selectItem($event)"
                                         (editItemEvent)="editItem($event)"
@@ -42,29 +42,10 @@
                     }
                 </div>
                 <div class="footer">
-                    <to-do-create-item (addNewItemEvent)="addItem($event)"></to-do-create-item>
+                    <to-do-create-item (addNewItemEvent)="addItem($event)" />
                 </div>
             </div>
-            <tui-expand [expanded]="(selectedItemId$ | async) !== null">
-                <div class="list-description" [class.edited]="isEdit$ | async" [ngStyle]="{'height.px': height}">
-                    @if ((isEdit$ | async) === false) {
-                        <tui-scrollbar>
-                            <span [style]="{fontWeight: 600}">Описание:</span><br>
-                            <span>{{ editedDescription$ | async }}</span>
-                        </tui-scrollbar>
-                    } @else {
-                        <tui-textfield class="textarea-edit" tuiTextfieldSize="m" [tuiTextfieldCleaner]="false">
-                            <label tuiLabel>Описание:</label>
-                            <textarea
-                                tuiTextarea
-                                placeholder="Введите новое описание дела..."
-                                [formControl]="textareaControl"
-                            ></textarea>
-                        </tui-textfield>
-                    }
-
-                </div>
-            </tui-expand>
+                <router-outlet></router-outlet>
         </div>
     }
 </div>

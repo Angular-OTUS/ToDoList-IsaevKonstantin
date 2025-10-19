@@ -1,0 +1,20 @@
+.list-description {
+    height: calc(100% - 12px);
+    width: 210px;
+    padding: 5px;
+    border-bottom: 1px solid #92fbff;
+    border-top: 1px solid #92fbff;
+    background-color: rgba(157, 255, 255, 0.250);
+}
+
+.textarea-edit {
+    width: 100%;
+    height: 100%;
+}
+
+.edited {
+    background-color: rgba(46, 255, 255, 0.150);
+    border: 1px solid rgb(46, 255, 255);
+    border-radius: 5px;
+}
+
