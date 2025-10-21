@@ -1,7 +1,7 @@
 <div class="list-description" [class.edited]="isEdit$ | async" >
     @if ((isEdit$ | async) === false) {
         <tui-scrollbar>
-            <span [style]="{fontWeight: 600}">Описание:</span><br>
+            <span class="title">Описание:</span><br>
             <span>{{ (selectedItem$ | async)?.description }}</span>
         </tui-scrollbar>
     } @else {

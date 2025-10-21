@@ -34,8 +34,7 @@ export class ToDoItemView implements OnInit {
     this.route.paramMap.pipe(
       takeUntilDestroyed(this.destroyRef),
     ).subscribe((pm) => {
-      const id = pm.get('id');
-      this.getSelectedItem(id);
+      this.getSelectedItem(pm.get('id'));
     })
   }
 
