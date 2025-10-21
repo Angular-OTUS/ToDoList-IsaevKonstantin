@@ -7,6 +7,8 @@ import { toDoListReducer } from './app/store/to-do-list-store/reduser';
 import { ToDoEffects } from './app/store/to-do-list-store/effect';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { httpBooleanInterceptor } from './app/interceptors/boolean-response';
+import { provideRouter } from '@angular/router';
+import { routes } from './app/app.routes';
 
 bootstrapApplication(App, {
   ...appConfig,
@@ -17,5 +19,6 @@ bootstrapApplication(App, {
     ),
     provideStore({toDoList: toDoListReducer}),
     provideEffects([ToDoEffects]),
+    provideRouter(routes),
   ]
 }).catch((err) => console.error(err));

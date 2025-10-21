@@ -12,7 +12,7 @@ import {
 import { ToDoListService } from "../../services/to-do-list-service";
 import { ToastService } from "../../services/toast";
 import { select, Store } from "@ngrx/store";
-import { toDoList } from "./select";
+import { allToDoList, filteredToDoList, newDescription } from "./select";
 
 @Injectable()
 export class ToDoEffects {
@@ -55,7 +55,7 @@ export class ToDoEffects {
     addItem$ = createEffect(() =>
         this.actions$.pipe(
             ofType(addItem),
-            withLatestFrom(this.store.pipe(select(toDoList))),
+            withLatestFrom(this.store.pipe(select(filteredToDoList))),
             switchMap(([{item}, list]) => {
                 const nextId: number = list.length ? Math.max(...list.map(item => item.id)) + 1 : 0;
                 return this.toDoService.addItem(item, nextId).pipe(
@@ -97,8 +97,9 @@ export class ToDoEffects {
     changeItem$ = createEffect(() =>
         this.actions$.pipe(
             ofType(changeItem),
-            switchMap(({item}) => {
-                return this.toDoService.changeItem(item).pipe(
+            withLatestFrom(this.store.pipe(select(newDescription))),
+            switchMap(([{item}, description]) => {
+                return this.toDoService.changeItem({...item, description: description}).pipe(
                     switchMap((result) => {
                         if (result) {
                             this.toast.showToast("Дело успешно сохранено!");
@@ -117,13 +118,24 @@ export class ToDoEffects {
     changeItemStatus$ = createEffect(() =>
         this.actions$.pipe(
             ofType(changeItemStatus),
-            withLatestFrom(this.store.pipe(select(toDoList))),
+            withLatestFrom(this.store.pipe(select(allToDoList))),
             switchMap(([{item}, list]) => {
-                if (list.find((listItem) => listItem.id === item.id)?.status === item.status) return of(false);
-                return this.toDoService.changeItemStatus(item);
-            }),
-            tap((result) => {
-                this.toast.showToast(result ? "Статус успешно изменен!" : "Статус не изменился!");
+                if (list.find((listItem) => listItem.id === item.id)?.status === item.status) {
+                    this.toast.showToast("Статус не изменился!");
+                    return of(null);
+                }
+                return this.toDoService.changeItemStatus(item).pipe(
+                    tap((result) => {
+                        if (result) {
+                            const newList = [...list].map((listItem) => {
+                                if (listItem.id === item.id) return {...listItem, status: item.status};
+                                return listItem;
+                            });
+                            this.store.dispatch(setList({list: newList}));
+                        }
+                        this.toast.showToast(result ? "Статус успешно изменен!" : "Не удалось изменить статус!");
+                    }),
+                );
             }),
         ),
         {dispatch: false},

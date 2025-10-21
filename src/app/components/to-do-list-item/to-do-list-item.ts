@@ -1,5 +1,4 @@
 import { Component, DestroyRef, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
-import { UiButton } from '../../library/ui-button/ui-button';
 import { Tooltip } from '../../directives';
 import { IChStatusToDoItem, ISaveToDoItem, IToDoItem } from '../../interfaces/interfaces';
 import { TuiTextfield } from '@taiga-ui/core';
@@ -8,6 +7,7 @@ import { TuiCheckbox } from '@taiga-ui/kit';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { debounceTime } from 'rxjs';
 import { EStatusInfo } from '../../enums/status';
+import { UiButton } from '../../library';
 
 @Component({
   selector: 'to-do-list-item',

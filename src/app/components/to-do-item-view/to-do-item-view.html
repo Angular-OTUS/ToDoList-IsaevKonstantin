@@ -1,0 +1,17 @@
+<div class="list-description" [class.edited]="isEdit$ | async" >
+    @if ((isEdit$ | async) === false) {
+        <tui-scrollbar>
+            <span class="title">Описание:</span><br>
+            <span>{{ (selectedItem$ | async)?.description }}</span>
+        </tui-scrollbar>
+    } @else {
+        <tui-textfield class="textarea-edit" tuiTextfieldSize="m" [tuiTextfieldCleaner]="false">
+            <label tuiLabel>Описание:</label>
+            <textarea
+                tuiTextarea
+                placeholder="Введите новое описание дела..."
+                [formControl]="textareaControl"
+            ></textarea>
+        </tui-textfield>
+    }
+</div>
