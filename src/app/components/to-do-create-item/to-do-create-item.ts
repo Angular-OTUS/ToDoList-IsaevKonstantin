@@ -1,9 +1,10 @@
-import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Component, Inject, inject } from '@angular/core';
 import { UiButton } from '../../library/ui-button/ui-button';
-import { TuiExpand, TuiTextfield } from '@taiga-ui/core';
+import { TuiDialogContext, TuiExpand, TuiTextfield } from '@taiga-ui/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { INewToDoItem } from '../../interfaces/interfaces';
 import { TuiTextarea } from '@taiga-ui/kit';
+import {POLYMORPHEUS_CONTEXT } from '@taiga-ui/polymorpheus';
 
 @Component({
   selector: 'to-do-create-item',
@@ -12,8 +13,6 @@ import { TuiTextarea } from '@taiga-ui/kit';
   styleUrl: './to-do-create-item.scss'
 })
 export class ToDoCreateItem {
-  @Output() addNewItemEvent: EventEmitter<INewToDoItem> = new EventEmitter<INewToDoItem>();
-
   private fb = inject(FormBuilder);
 
   protected form: FormGroup = this.fb.group({
@@ -21,8 +20,12 @@ export class ToDoCreateItem {
     description: [""],
   });
 
+  constructor(
+    @Inject(POLYMORPHEUS_CONTEXT) private readonly context: TuiDialogContext<INewToDoItem>,
+  ) {}
+
   protected onSubmit(): void {
     const {text, description} = this.form.value;
-    this.addNewItemEvent.emit({text: text, description: description});
+    this.context.completeWith({text: text, description: description});
   }
 }

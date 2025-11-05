@@ -1,3 +1,20 @@
+.header {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.img{
+    width: 25px;
+    height: 25px;
+    margin-right: 5px;
+}
+
+h2 {
+    padding-right: 30px;
+}
+
 form {
     padding-top: 5px;
     display: flex;
@@ -7,13 +24,13 @@ form {
 }
 
 .input {
-    width: 380px;
+    width: 100%;
     height: 45px;
     margin-bottom: 5px;
 }
 
 .textarea {
-    width: 380px;
+    width: 100%;
     margin-bottom: 5px;
     height: 90px;
 }

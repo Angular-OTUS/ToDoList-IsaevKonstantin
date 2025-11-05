@@ -56,7 +56,6 @@ export class ToDoItemView implements OnInit {
     this.selectedItem$.pipe(
       takeUntilDestroyed(this.destroyRef),
       tap((item) => {
-        console.log(item);
         if (!item) {
           this.router.navigate(['../'], {relativeTo: this.route});
         } else {

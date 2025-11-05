@@ -10,20 +10,23 @@
         </div>
         <div 
             class="item-text"
+            [style]="{width: isDelete ? 'calc(100% - 60px)' : 'calc(100% - 30px)'}"
             (click)="outSelecteEmitter()"
             (dblclick)="outEditEmitter()"
         >
             <span [style]="{fontWeight: 600}">{{ item.text }}</span>
         </div>
-        <ui-button 
-            tooltip
-            tooltipText="Нажмите, чтобы удалить"
-            tooltipPos="right"
-            class="button button-delete"
-            (outClickEmitter)="outDeleteEmitter()"
-        >
-            Удалить
-        </ui-button>
+        @if (isDelete) {
+            <ui-button 
+                tooltip
+                tooltipText="Нажмите, чтобы удалить"
+                tooltipPos="right"
+                class="button button-delete"
+                (outClickEmitter)="outDeleteEmitter()"
+            >
+                <img src="assets/icons/delete-icon.svg">
+            </ui-button>
+        }
     } @else {
         <div class="checkbox">
             <input
@@ -33,7 +36,7 @@
                 [formControl]="statusControl"
             />
         </div>
-        <div class="item-text">
+        <div class="item-text" [style]="{width: 'calc(100% - 60px)'}">
             <tui-textfield class="input" tuiTextfieldSize="s" [tuiTextfieldCleaner]="false">
                 <input
                     tuiTextfield
@@ -49,7 +52,7 @@
             class="button button-add"
             (outClickEmitter)="outSaveEmitter()"
         >
-            Сохранить
+            <img src="assets/icons/assept-icon.svg">
         </ui-button>
     }
 </div>

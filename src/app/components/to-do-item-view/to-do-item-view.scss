@@ -1,9 +1,14 @@
+:host {
+    width: calc(50% - 10px);
+    height: calc(100% - 10px);
+    padding: 5px;
+}
+
 .list-description {
     height: calc(100% - 12px);
-    width: 210px;
     padding: 5px;
-    border-bottom: 1px solid #92fbff;
-    border-top: 1px solid #92fbff;
+    border: 1px solid rgb(46, 255, 255);
+    border-radius: 5px;
     background-color: rgba(157, 255, 255, 0.250);
 }
 

@@ -20,6 +20,6 @@ export const initialState: ToDoListState = {
     isAdd: false,
     isDelete: false,
     isChange: false,
-    filterStatus: EStatus.All,
+    filterStatus: EStatus.InProgress,
     newDescription: "",
 }

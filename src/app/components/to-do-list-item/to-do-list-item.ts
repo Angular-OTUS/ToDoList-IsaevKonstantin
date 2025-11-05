@@ -1,4 +1,4 @@
-import { Component, DestroyRef, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, DestroyRef, EventEmitter, inject, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Tooltip } from '../../directives';
 import { IChStatusToDoItem, ISaveToDoItem, IToDoItem } from '../../interfaces/interfaces';
 import { TuiTextfield } from '@taiga-ui/core';
@@ -18,6 +18,7 @@ import { UiButton } from '../../library';
 export class ToDoListItem implements OnInit {
   @Input({required: true}) item!: IToDoItem;
   @Input() isEdit: boolean = false;
+  @Input() isDelete: boolean = true;
   @Output() deleteItemEvent: EventEmitter<number> = new EventEmitter<number>();
   @Output() selectItemEvent: EventEmitter<number> = new EventEmitter<number>();
   @Output() editItemEvent: EventEmitter<number> = new EventEmitter<number>();
@@ -38,9 +39,15 @@ export class ToDoListItem implements OnInit {
     this.statusChangeSub();
   }
 
-  private initControlsValue(): void {
-    this.textControl.setValue(this.item.text);
-    this.statusControl.setValue(this.eStatusInfo[this.item.status].value);
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['item']) {
+      this.initControlsValue(false);
+    }
+  }
+
+  private initControlsValue(isEmit: boolean = true): void {
+    this.textControl.setValue(this.item.text, {emitEvent: isEmit});
+    this.statusControl.setValue(this.eStatusInfo[this.item.status].value, {emitEvent: isEmit});
   }
 
   private statusChangeSub(): void {

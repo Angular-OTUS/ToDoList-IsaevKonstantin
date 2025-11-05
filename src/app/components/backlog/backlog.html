@@ -1,22 +1,22 @@
-<div class="container" [class.container-open]="SelectedId !== null">
+<div class="container">
     <div class="header">
-        <h1>Todo List</h1>
+        <img class="img" src="assets/icons/backlog-icon.svg">
+        <h2>Backlog</h2>
     </div>
     @if (isLoading$ | async) {
         <ui-spinner [inheritColor]="true" />
     } @else {
         <div class="list">
-            <div [class.list-body]="SelectedId !== null">
-                <div class="filters">
-                    <tui-radio-list
-                        size="s"
-                        [formControl]="statusFilterControl"
-                        [items]="statusOptions"
-                        [style.flex-direction]="'row'"
-                        [style.width]="'max-content'"
-                    />
-                </div>
-                <div class="body">
+            <div class="filters">
+                <tui-radio-list
+                    class="filters-radio"
+                    size="s"
+                    [formControl]="statusFilterControl"
+                    [items]="statusOptions"
+                />
+            </div>
+            <div class="body">
+                <div class="body-list">
                     @if ((list$ | async)?.length) {
                         <ul>
                             @for (item of list$ | async; track item.id) {
@@ -38,15 +38,28 @@
                             }
                         </ul>
                     } @else {
-                        <p>Здесь может быть ваш список дел!</p>
+                        <p> {{ NoneToDoText }} </p>
                     }
+                    <ui-button
+                        tooltip
+                        tooltipText="Нажмите, чтобы добавить новое дело"
+                        tooltipPos="bottom"
+                        class="button button-add"
+                        (outClickEmitter)="createItem(template)"
+                    >
+                        <img src="assets/icons/add-icon.svg">
+                    </ui-button>
                 </div>
-                <div class="footer">
-                    <to-do-create-item (addNewItemEvent)="addItem($event)" />
-                </div>
-            </div>
                 <router-outlet></router-outlet>
+            </div>
         </div>
     }
 </div>
+
+<ng-template
+    #template
+    let-observer
+>
+    <to-do-create-item />
+</ng-template>
 
