@@ -10,7 +10,6 @@ import { HttpClient } from "@angular/common/http";
 export class ToDoListService {
     private readonly apiUrl = "/api/todos";
     private destroyRef = inject(DestroyRef);
-    list: IToDoItem[] = [];
 
     constructor(private http: HttpClient) {}
 
