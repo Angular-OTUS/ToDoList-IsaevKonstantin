@@ -27,13 +27,17 @@ import { type PolymorpheusContent} from '@taiga-ui/polymorpheus';
 export class Backlog implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly dialogs = inject(TuiDialogService);
+  private readonly store = inject(Store);
+  private readonly toast = inject(ToastService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   
   protected list$!: Observable<IToDoItem[]>;
   protected isEdit$!: Observable<boolean>;
   protected isLoading$!: Observable<boolean>;
   protected statusFilterControl = new FormControl<EStatus>(EStatus.InProgress, { nonNullable: true });
   protected readonly eStatus = EStatus;
-  protected statusOptions = [
+  protected readonly statusOptions = [
     this.eStatus.All,
     this.eStatus.InProgress,
     this.eStatus.Completed,
@@ -45,17 +49,15 @@ export class Backlog implements OnInit {
   }
 
   get NoneToDoText(): string {
-    if (this.statusFilterControl.value === this.eStatus.InProgress) return "Список не выполненых дел пуст!";
-    if (this.statusFilterControl.value === this.eStatus.Completed) return "Список выполненых дел пуст!";
-    return "Список дел пуст, добавьте новые дела!";
+    switch (this.statusFilterControl.value) {
+      case this.eStatus.InProgress:
+        return "Список не выполненых дел пуст!";
+      case this.eStatus.Completed:
+        return "Список выполненых дел пуст!";
+      default:
+        return "Список дел пуст, добавьте новые дела!";
+    }
   }
-  
-  constructor(
-    private store: Store,
-    private toast: ToastService,
-    private router: Router,
-    private route: ActivatedRoute,
-  ) {}
 
   ngOnInit(): void {
     this.isLoading$ = this.store.pipe(select(isLoading));

@@ -14,15 +14,13 @@ import {POLYMORPHEUS_CONTEXT } from '@taiga-ui/polymorpheus';
 })
 export class ToDoCreateItem {
   private fb = inject(FormBuilder);
+  private readonly context =
+    inject<TuiDialogContext<INewToDoItem>>(POLYMORPHEUS_CONTEXT);
 
   protected form: FormGroup = this.fb.group({
     text: ["", [Validators.required, Validators.minLength(1)]],
     description: [""],
   });
-
-  constructor(
-    @Inject(POLYMORPHEUS_CONTEXT) private readonly context: TuiDialogContext<INewToDoItem>,
-  ) {}
 
   protected onSubmit(): void {
     const {text, description} = this.form.value;

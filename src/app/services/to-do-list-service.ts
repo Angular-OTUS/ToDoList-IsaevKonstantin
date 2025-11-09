@@ -9,9 +9,8 @@ import { HttpClient } from "@angular/common/http";
 })
 export class ToDoListService {
     private readonly apiUrl = "/api/todos";
-    private destroyRef = inject(DestroyRef);
-
-    constructor(private http: HttpClient) {}
+    private readonly destroyRef = inject(DestroyRef);
+    private readonly http = inject(HttpClient);
 
     public getList(): Observable<IToDoItem[]> {
         return this.http.get<IToDoItem[]>(this.apiUrl).pipe(

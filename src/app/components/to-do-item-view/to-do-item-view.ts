@@ -20,17 +20,16 @@ import { updateDescription } from '../../store/to-do-list-store/action';
 })
 export class ToDoItemView implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
+  private readonly store = inject(Store);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly toast = inject(ToastService);
 
-  protected textareaControl: FormControl<string> = new FormControl<string>("", {nonNullable: true});
+  protected textareaControl = new FormControl<string>("", {nonNullable: true});
   protected isEdit$!: Observable<boolean>;
   protected selectedItem$!: Observable<IToDoItem | null>;
 
-  constructor(
-    private store: Store,
-    private route: ActivatedRoute,
-    private router: Router,
-    private toast: ToastService,
-  ) {
+  constructor() {
     this.route.paramMap.pipe(
       takeUntilDestroyed(this.destroyRef),
     ).subscribe((pm) => {

@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener, Input, OnDestroy, Renderer2 } from "@angular/core";
+import { Directive, ElementRef, HostListener, inject, Input, OnDestroy, Renderer2 } from "@angular/core";
 
 type TTooltopPos = 'top' | 'bottom' | 'left' | 'right';
 
@@ -9,14 +9,14 @@ export class Tooltip implements OnDestroy {
     @Input() tooltipText!: string;
     @Input() tooltipPos: TTooltopPos = "top";
 
+    private readonly element = inject(ElementRef);
+    private readonly renderer = inject(Renderer2);
     private tooltipElement?: HTMLElement;
     private tooltipArrow?: HTMLElement;
 
     private get isDisabled(): boolean {
         return this.element.nativeElement.classList.contains('disabled');
     }
-
-    constructor(private element: ElementRef, private renderer: Renderer2) {}
 
     ngOnDestroy(): void {
         this.hideTooltip();

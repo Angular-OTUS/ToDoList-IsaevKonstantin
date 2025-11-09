@@ -23,23 +23,20 @@ import { Tooltip } from '../../directives';
 })
 export class Board implements OnInit {
   private readonly dialogs = inject(TuiDialogService);
+  private readonly store = inject(Store);
+  private readonly toast = inject(ToastService);
 
   protected allList$!: Observable<IToDoItem[]>;
   protected inProgressList$!: Observable<IToDoItem[]>;
   protected completedList$!: Observable<IToDoItem[]>;
   protected isLoading$!: Observable<boolean>;
   protected readonly eStatus = EStatus;
-  protected statusOptions = [
+  protected readonly statusOptions = [
     this.eStatus.All,
     this.eStatus.InProgress,
     this.eStatus.Completed,
   ];
-
-  constructor(
-    private store: Store,
-    private toast: ToastService,
-  ) {}
-
+  
   ngOnInit(): void {
     this.isLoading$ = this.store.pipe(select(isLoading));
     this.allList$ = this.store.pipe(select(allToDoList));
