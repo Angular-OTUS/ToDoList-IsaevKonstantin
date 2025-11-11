@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ToastService } from '../../services/toast';
 import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
@@ -10,11 +10,11 @@ import { AsyncPipe } from '@angular/common';
   styleUrl: './toasts.scss',
 })
 export class Toasts implements OnInit {
-    protected messages$!: Observable<string[]>;
+  private readonly toastService = inject(ToastService);
 
-    constructor(private toastService: ToastService) {}
+  protected messages$!: Observable<string[]>;
 
-    ngOnInit(): void {
-        this.messages$ = this.toastService.messages$;
-    }
+  ngOnInit(): void {
+      this.messages$ = this.toastService.messages$;
+  }
 }

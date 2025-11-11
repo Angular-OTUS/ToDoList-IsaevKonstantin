@@ -13,24 +13,31 @@ import { ToastService } from '../../services/toast';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { EStatus } from '../../enums/status';
 import { ToDoCreateItem } from "../to-do-create-item/to-do-create-item";
-import { UiSpinner } from '../../library';
+import { UiSpinner, UiButton } from '../../library';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import { TuiDialogContext, TuiDialogService } from '@taiga-ui/core';
+import { type PolymorpheusContent} from '@taiga-ui/polymorpheus';
 
 @Component({
-  selector: 'to-do-list',
-  imports: [ToDoListItem, ToDoCreateItem, UiSpinner, Tooltip, CommonModule, ReactiveFormsModule, TuiRadioList, RouterOutlet],
-  templateUrl: './to-do-list.html',
-  styleUrl: './to-do-list.scss',
+  selector: 'backlog',
+  imports: [ToDoListItem, ToDoCreateItem, UiSpinner, Tooltip, CommonModule, ReactiveFormsModule, TuiRadioList, RouterOutlet, UiButton],
+  templateUrl: './backlog.html',
+  styleUrl: './backlog.scss',
 })
-export class ToDoList implements OnInit {
+export class Backlog implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
+  private readonly dialogs = inject(TuiDialogService);
+  private readonly store = inject(Store);
+  private readonly toast = inject(ToastService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   
   protected list$!: Observable<IToDoItem[]>;
   protected isEdit$!: Observable<boolean>;
   protected isLoading$!: Observable<boolean>;
-  protected statusFilterControl = new FormControl<EStatus>(EStatus.All, { nonNullable: true });
+  protected statusFilterControl = new FormControl<EStatus>(EStatus.InProgress, { nonNullable: true });
   protected readonly eStatus = EStatus;
-  protected statusOptions = [
+  protected readonly statusOptions = [
     this.eStatus.All,
     this.eStatus.InProgress,
     this.eStatus.Completed,
@@ -40,13 +47,17 @@ export class ToDoList implements OnInit {
     const currentId = this.route.firstChild?.snapshot.paramMap.get("id");
     return !!currentId ? Number(currentId) : null;
   }
-  
-  constructor(
-    private store: Store,
-    private toast: ToastService,
-    private router: Router,
-    private route: ActivatedRoute,
-  ) {}
+
+  get NoneToDoText(): string {
+    switch (this.statusFilterControl.value) {
+      case this.eStatus.InProgress:
+        return "Список не выполненых дел пуст!";
+      case this.eStatus.Completed:
+        return "Список выполненых дел пуст!";
+      default:
+        return "Список дел пуст, добавьте новые дела!";
+    }
+  }
 
   ngOnInit(): void {
     this.isLoading$ = this.store.pipe(select(isLoading));
@@ -74,11 +85,6 @@ export class ToDoList implements OnInit {
     this.store.dispatch(deleteItem({id: id}));
   }
 
-  protected addItem(newItem: INewToDoItem): void {
-    this.toast.showToast("Добавление нового дела...");
-    this.store.dispatch(addItem({item: newItem}));
-  }
-
   protected selectItem(id: number): void {
     this.store.dispatch(isEditItem({isEdit: false}));
     if (id === this.SelectedId) {
@@ -100,5 +106,14 @@ export class ToDoList implements OnInit {
 
   protected changeStatusItem(data: IChStatusToDoItem): void {
     this.store.dispatch(changeItemStatus({item: {id: data.id, status: data.status}}));
+  }
+
+  protected createItem(content: PolymorpheusContent<TuiDialogContext<INewToDoItem>>): void {
+    this.dialogs.open(content).subscribe({
+      next: (item) => {
+        this.toast.showToast("Добавление нового дела...");
+        this.store.dispatch(addItem({item: item}));
+      },
+    });
   }
 }

@@ -16,8 +16,10 @@ import { allToDoList, filteredToDoList, newDescription } from "./select";
 
 @Injectable()
 export class ToDoEffects {
-    private actions$ = inject(Actions);
-    private store = inject(Store);
+    private readonly toDoService = inject(ToDoListService);
+    private readonly toast = inject(ToastService);
+    private readonly actions$ = inject(Actions);
+    private readonly store = inject(Store);
     
     loadList$ = createEffect(() =>
         this.actions$.pipe(
@@ -140,9 +142,4 @@ export class ToDoEffects {
         ),
         {dispatch: false},
     );
-
-    constructor(
-        private toDoService: ToDoListService,
-        private toast: ToastService,
-    ) {}
 }

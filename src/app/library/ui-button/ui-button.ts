@@ -7,7 +7,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrl: './ui-button.scss',
 })
 export class UiButton {
-  @Output() outClickEmitter: EventEmitter<Event> = new EventEmitter<Event>();
+  @Output() outClickEmitter = new EventEmitter<Event>();
 
   public clickEmitter(event: Event) {
     event.stopPropagation();

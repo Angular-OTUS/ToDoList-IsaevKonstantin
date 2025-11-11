@@ -1,3 +1,7 @@
+<div class="header">
+    <img class="img" src="assets/icons/create-icon.svg">
+    <h2>Create new ToDo</h2>
+</div>
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <tui-textfield class="input" tuiTextfieldSize="m" [tuiTextfieldCleaner]="true">
         <label tuiLabel for="todoText">Новое дело:</label>
@@ -8,7 +12,7 @@
             formControlName="text"
         />
     </tui-textfield>
-    <tui-expand [expanded]="!!form.get('text')?.valid && !!form.get('text')?.dirty">
+    <tui-expand [expanded]="!!form.get('text')?.valid && !!form.get('text')?.dirty" [style.width]="'100%'">
         <tui-textfield class="textarea" tuiTextfieldSize="m" [tuiTextfieldCleaner]="true">
             <label tuiLabel for="todoDescription">Описание:</label>
             <textarea
@@ -20,9 +24,6 @@
         </tui-textfield>
     </tui-expand>
     <ui-button
-        tooltip
-        tooltipText="Нажмите, чтобы добавить"
-        tooltipPos="bottom"
         class="button button-add"
         type="submit"
         [class.disabled]="form.invalid"

@@ -1,0 +1,16 @@
+<div class="home">
+    <aside class="home-menu">
+        <div class="home-title">
+            <img class="icon" src="assets/icons/home-icon.svg">
+            <h1>TasksBoard</h1>
+        </div>
+
+        <nav class="menu">
+            <span class="menu-item" routerLinkActive="menu-item-active" [routerLinkActiveOptions]="{exact: false}" routerLink="/backlog">Backlog</span>
+            <span class="menu-item" routerLinkActive="menu-item-active" [routerLinkActiveOptions]="{exact: true}" routerLink="/board">Board</span>
+        </nav>
+    </aside>
+    <main class="home-content">
+        <router-outlet></router-outlet>
+    </main>
+</div>

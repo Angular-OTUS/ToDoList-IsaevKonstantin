@@ -1,4 +1,4 @@
-import { Component, DestroyRef, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, DestroyRef, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Tooltip } from '../../directives';
 import { IChStatusToDoItem, ISaveToDoItem, IToDoItem } from '../../interfaces/interfaces';
 import { TuiTextfield } from '@taiga-ui/core';
@@ -15,14 +15,15 @@ import { UiButton } from '../../library';
   templateUrl: './to-do-list-item.html',
   styleUrl: './to-do-list-item.scss',
 })
-export class ToDoListItem implements OnInit {
+export class ToDoListItem implements OnInit, OnChanges {
   @Input({required: true}) item!: IToDoItem;
-  @Input() isEdit: boolean = false;
-  @Output() deleteItemEvent: EventEmitter<number> = new EventEmitter<number>();
-  @Output() selectItemEvent: EventEmitter<number> = new EventEmitter<number>();
-  @Output() editItemEvent: EventEmitter<number> = new EventEmitter<number>();
-  @Output() saveItemEvent: EventEmitter<ISaveToDoItem> = new EventEmitter<ISaveToDoItem>();
-  @Output() changeStatusEvent: EventEmitter<IChStatusToDoItem> = new EventEmitter<IChStatusToDoItem>();
+  @Input() isEdit = false;
+  @Input() isDelete = true;
+  @Output() deleteItemEvent = new EventEmitter<number>();
+  @Output() selectItemEvent = new EventEmitter<number>();
+  @Output() editItemEvent = new EventEmitter<number>();
+  @Output() saveItemEvent = new EventEmitter<ISaveToDoItem>();
+  @Output() changeStatusEvent = new EventEmitter<IChStatusToDoItem>();
   
   private clickTimeout?: number;
   private readonly destroyRef = inject(DestroyRef);
@@ -31,16 +32,20 @@ export class ToDoListItem implements OnInit {
   protected textControl = new FormControl<string>("", {nonNullable: true});
   protected statusControl = new FormControl<boolean>(false, {nonNullable: true});
 
-  constructor() {}
-
   ngOnInit(): void {
     this.initControlsValue();
     this.statusChangeSub();
   }
 
-  private initControlsValue(): void {
-    this.textControl.setValue(this.item.text);
-    this.statusControl.setValue(this.eStatusInfo[this.item.status].value);
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['item']) {
+      this.initControlsValue(false);
+    }
+  }
+
+  private initControlsValue(isEmit: boolean = true): void {
+    this.textControl.setValue(this.item.text, {emitEvent: isEmit});
+    this.statusControl.setValue(this.eStatusInfo[this.item.status].value, {emitEvent: isEmit});
   }
 
   private statusChangeSub(): void {

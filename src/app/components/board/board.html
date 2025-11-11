@@ -1,0 +1,68 @@
+<div class="container">
+    <div class="header">
+        <img class="img" src="assets/icons/board-icon.svg">
+        <h2>Board</h2>
+    </div>
+    @if (isLoading$ | async) {
+        <ui-spinner [inheritColor]="true" />
+    } @else {
+        <div class="list">
+            <div class="body">
+                 <ng-container
+                    *ngTemplateOutlet="listTemplate; context: { title: 'All', list: allList$ | async, showAdd: true }"
+                ></ng-container>
+
+                <ng-container
+                    *ngTemplateOutlet="listTemplate; context: { title: 'In Progress', list: inProgressList$ | async, showAdd: false }"
+                ></ng-container>
+
+                <ng-container
+                    *ngTemplateOutlet="listTemplate; context: { title: 'Completed', list: completedList$ | async, showAdd: false }"
+                ></ng-container>
+            </div>
+        </div>
+    }
+</div>
+
+<ng-template #listTemplate let-title="title" let-list="list" let-showAdd="showAdd">
+  <div class="body-list">
+    <div class="body-title">
+        <span>{{ title }}</span>
+    </div>
+    @if (list.length > 0) {
+      <ul>
+        @for (item of list; track item.id) {
+          <li>
+            <to-do-list-item
+              [item]="item"
+              [isDelete]="false"
+              (changeStatusEvent)="changeStatusItem($event)"
+            />
+          </li>
+        }
+      </ul>
+    } @else {
+      <p>Список пуст!</p>
+    }
+
+    @if (showAdd) {
+      <ui-button
+        tooltip
+        tooltipText="Нажмите, чтобы добавить новое дело"
+        tooltipPos="bottom"
+        class="button button-add"
+        (outClickEmitter)="createItem(template)"
+      >
+        <img src="assets/icons/add-icon.svg" />
+      </ui-button>
+    }
+  </div>
+</ng-template>
+
+<ng-template
+    #template
+    let-observer
+>
+    <to-do-create-item />
+</ng-template>
+
