@@ -7,7 +7,5 @@ import { ToastService } from '../../services/toast';
   styleUrl: './toasts.scss',
 })
 export class Toasts {
-  private readonly toastService = inject(ToastService);
-
-  protected messages = this.toastService.messages;
+  protected messages = inject(ToastService).messages;
 }

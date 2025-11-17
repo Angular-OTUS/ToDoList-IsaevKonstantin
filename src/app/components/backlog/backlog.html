@@ -17,9 +17,10 @@
             </div>
             <div class="body">
                 <div class="body-list">
-                    @if (filteredList().length) {
+                    @let list = filteredList();
+                    @if (list.length) {
                         <ul>
-                            @for (item of filteredList(); track item.id) {
+                            @for (item of list; track item.id) {
                                 <li>
                                     <to-do-list-item 
                                         tooltip
@@ -56,7 +57,7 @@
     }
 </div>
 
-<ng-template #template let-observer>
+<ng-template #template>
     <to-do-create-item />
 </ng-template>
 

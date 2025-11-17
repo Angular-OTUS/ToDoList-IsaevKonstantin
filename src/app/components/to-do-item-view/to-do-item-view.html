@@ -1,5 +1,6 @@
-<div class="list-description" [class.edited]="isEdit()" >
-    @if ((isEdit()) === false) {
+@let isEditValue = isEdit();
+<div class="list-description" [class.edited]="isEditValue" >
+    @if (!isEditValue) {
         <tui-scrollbar>
             <span class="title">Описание:</span><br>
             <span>{{ selectedItem()?.description }}</span>

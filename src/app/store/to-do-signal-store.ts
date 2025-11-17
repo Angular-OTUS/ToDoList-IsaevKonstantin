@@ -3,7 +3,7 @@ import { patchState, signalStore, withComputed, withMethods, withState } from "@
 import { EStatus } from "../enums/status";
 import { IChStatusToDoItem, INewToDoItem, ISaveToDoItem, IToDoItem } from "../interfaces/interfaces";
 import { ToDoListService } from "../services/to-do-list-service";
-import { catchError, of, pipe, switchMap, tap } from "rxjs";
+import { catchError, EMPTY, of, pipe, switchMap, tap } from "rxjs";
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { ToastService } from "../services/toast";
 
@@ -35,6 +35,25 @@ export const toDoStore = signalStore(
   withState(initialState),
 
   withMethods((store, toDoService = inject(ToDoListService), toast = inject(ToastService)) => {
+    const getListData = () => 
+      toDoService.getList().pipe(
+        tap((list) => {
+          toast.showToast("Дела насущнные получены!");
+          patchState(store, { 
+            isLoad: false,
+            list: [...list].sort((a, b) => a.id - b.id),
+          });
+        }),
+        catchError(() => {
+          toast.showToast("Ошибка запроса списка дел!");
+          patchState(store, {
+            isLoad: false,
+            list: [],
+          });
+          return EMPTY;
+        }),
+      );
+
     const updateList = rxMethod<void>(
       pipe(
         tap(() => {
@@ -42,18 +61,7 @@ export const toDoStore = signalStore(
           toast.showToast("Обновление дел...");
         }),
         switchMap(() => {
-          return toDoService.getList().pipe(
-            tap((list) => {
-              toast.showToast("Дела насущнные обновлены!");
-              patchState(store, { isLoad: false });
-              patchState(store, {list: [...list].sort((a, b) => a.id - b.id)});
-            }),
-            catchError((err) => {
-              toast.showToast("Ошибка запроса списка дел!");
-              patchState(store, {list: []});
-              return err;
-            }),
-          );
+          return getListData();
         }),
       ),
     );
@@ -65,18 +73,7 @@ export const toDoStore = signalStore(
         pipe(
           tap(() => patchState(store, { isLoad: true })),
           switchMap(() => {
-            return toDoService.getList().pipe(
-              tap((list) => {
-                toast.showToast("Дела насущнные получены!");
-                patchState(store, {isLoad: false});
-                patchState(store, {list: [...list].sort((a, b) => a.id - b.id)});
-              }),
-              catchError((err) => {
-                toast.showToast("Ошибка запроса списка дел!");
-                patchState(store, {list: []});
-                return err;
-              }),
-            );
+            return getListData();
           }),
         ),
       ),
@@ -95,10 +92,19 @@ export const toDoStore = signalStore(
                     if (listItem.id === item.id) return {...listItem, status: item.status};
                     return listItem;
                   });
-                  patchState(store, {isEdit: false});
-                  patchState(store, { list: newList });
+                  patchState(store, {
+                    isEdit: false,
+                    list: newList,
+                  });
                 }
                 toast.showToast(result ? "Статус успешно изменен!" : "Не удалось изменить статус!");
+              }),
+              catchError(() => {
+                toast.showToast("Ошибка запроса изменения статуса!");
+                patchState(store, {
+                  isEdit: false,
+                });
+                return EMPTY;
               }),
             );
           }),
@@ -118,10 +124,10 @@ export const toDoStore = signalStore(
                   updateList();
                 }
               }),
-              catchError((err) => {
+              catchError(() => {
                 toast.showToast("Ошибка запроса добавления дела!");
                 patchState(store, { isAdd: false });
-                return err;
+                return EMPTY;
               }),
             );
           }),
@@ -134,17 +140,19 @@ export const toDoStore = signalStore(
           switchMap((id) => {
             return toDoService.deleteItem(id).pipe(
               tap((result) => {
-                patchState(store, { isDelete: false });
-                patchState(store, { isEdit: false });
+                patchState(store, {
+                  isDelete: false,
+                  isEdit: false,
+                });
                 toast.showToast(result ? "Дело успешно удалено!" : "Не удалось удалить дело!");
                 if (result) {
                   updateList();
                 }
               }),
-              catchError((err) => {
+              catchError(() => {
                 toast.showToast("Ошибка запроса удааления дела!");
                 patchState(store, { isDelete: false });
-                return err;
+                return EMPTY;
               }),
             );
           }),
@@ -157,17 +165,19 @@ export const toDoStore = signalStore(
           switchMap((item) => {
             return toDoService.changeItem({...item, description: store.newDescription()}).pipe(
               tap((result) => {
-                patchState(store, { isChange: false });
-                patchState(store, { isEdit: false });
+                patchState(store, {
+                  isChange: false,
+                  isEdit: false,
+                });
                 toast.showToast(result ? "Дело успешно сохранено!" : "Не удалось изменить дело!");
                 if (result) {
                   updateList();
                 }
               }),
-              catchError((err) => {
+              catchError(() => {
                 toast.showToast("Ошибка запроса изменения дела!");
                 patchState(store, { isChange: false });
-                return err;
+                return EMPTY;
               }),
             );
           }),
@@ -175,16 +185,18 @@ export const toDoStore = signalStore(
       ),
 
       switchStatusFilter(status: EStatus) {
-        patchState(store, {filterStatus: status});
-        patchState(store, {isEdit: false});
+        patchState(store, {
+          filterStatus: status,
+          isEdit: false,
+        });
       },
 
       isEditItem(isEdit: boolean) {
-        patchState(store, {isEdit: isEdit});
+        patchState(store, { isEdit: isEdit });
       },
 
       updateDescription(description: string) {
-        patchState(store, {newDescription: description});
+        patchState(store, { newDescription: description });
       },
     }
   }),
