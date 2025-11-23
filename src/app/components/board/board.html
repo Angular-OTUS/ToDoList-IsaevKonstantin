@@ -1,33 +1,33 @@
 <div class="container">
-    <div class="header">
-        <img class="img" src="assets/icons/board-icon.svg">
-        <h2>Board</h2>
+  <div class="header">
+    <img class="img" src="assets/icons/board-icon.svg">
+    <h2>Board</h2>
+  </div>
+  @if (isLoading()) {
+    <ui-spinner [inheritColor]="true" />
+  } @else {
+    <div class="list">
+      <div class="body">
+        <ng-container
+          *ngTemplateOutlet="listTemplate; context: { title: 'All', list: allList(), showAdd: true }"
+        ></ng-container>
+
+        <ng-container
+          *ngTemplateOutlet="listTemplate; context: { title: 'In Progress', list: inProgressList(), showAdd: false }"
+        ></ng-container>
+
+        <ng-container
+          *ngTemplateOutlet="listTemplate; context: { title: 'Completed', list: completedList(), showAdd: false }"
+        ></ng-container>
+      </div>
     </div>
-    @if (isLoading$ | async) {
-        <ui-spinner [inheritColor]="true" />
-    } @else {
-        <div class="list">
-            <div class="body">
-                 <ng-container
-                    *ngTemplateOutlet="listTemplate; context: { title: 'All', list: allList$ | async, showAdd: true }"
-                ></ng-container>
-
-                <ng-container
-                    *ngTemplateOutlet="listTemplate; context: { title: 'In Progress', list: inProgressList$ | async, showAdd: false }"
-                ></ng-container>
-
-                <ng-container
-                    *ngTemplateOutlet="listTemplate; context: { title: 'Completed', list: completedList$ | async, showAdd: false }"
-                ></ng-container>
-            </div>
-        </div>
-    }
+  }
 </div>
 
 <ng-template #listTemplate let-title="title" let-list="list" let-showAdd="showAdd">
   <div class="body-list">
     <div class="body-title">
-        <span>{{ title }}</span>
+      <span>{{ title }}</span>
     </div>
     @if (list.length > 0) {
       <ul>
@@ -59,10 +59,7 @@
   </div>
 </ng-template>
 
-<ng-template
-    #template
-    let-observer
->
+<ng-template #template>
     <to-do-create-item />
 </ng-template>
 

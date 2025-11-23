@@ -3,7 +3,7 @@
         <img class="img" src="assets/icons/backlog-icon.svg">
         <h2>Backlog</h2>
     </div>
-    @if (isLoading$ | async) {
+    @if (isLoading()) {
         <ui-spinner [inheritColor]="true" />
     } @else {
         <div class="list">
@@ -17,9 +17,10 @@
             </div>
             <div class="body">
                 <div class="body-list">
-                    @if ((list$ | async)?.length) {
+                    @let list = filteredList();
+                    @if (list.length) {
                         <ul>
-                            @for (item of list$ | async; track item.id) {
+                            @for (item of list; track item.id) {
                                 <li>
                                     <to-do-list-item 
                                         tooltip
@@ -27,7 +28,7 @@
                                         tooltipPos="left"
                                         [class.selected]="SelectedId === item.id"
                                         [item]="item"
-                                        [isEdit]="SelectedId === item.id && !!(isEdit$ | async)"
+                                        [isEdit]="SelectedId === item.id && !!isEdit()"
                                         (deleteItemEvent)="deleteItem($event)"
                                         (selectItemEvent)="selectItem($event)"
                                         (editItemEvent)="editItem($event)"
@@ -56,10 +57,7 @@
     }
 </div>
 
-<ng-template
-    #template
-    let-observer
->
+<ng-template #template>
     <to-do-create-item />
 </ng-template>
 
