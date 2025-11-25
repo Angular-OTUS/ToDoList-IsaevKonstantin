@@ -1,0 +1,59 @@
+{
+    "HOME": {
+        "TITLE": "TasksBoard"
+    },
+    "TOOLTIP": {
+        "DESCRIPTION_AND_EDITING": "Click to view description. Double-click to edit.",
+        "ADD_NEW_TO_DO": "Click to add a new to-do",
+        "DELETE_TO_DO": "Click to delete",
+        "SAVE_TO_DO": "Click to save changes"
+    },
+    "LIBRARY": {
+        "ENTER_NEW_TITLE": "Enter a new to-do title...",
+        "ENTER_NEW_TO_DO": "Enter a new to-do...",
+        "NEW_TO_DO": "New to-do:",
+        "NEW_TO_DO_DESCRIPTION": "Description of the new to-do:",
+        "ADD": "Add",
+        "CREATE_NEW_TO_DO": "Create new to-do",
+        "ENTER_NEW_TO_DO_DESCRIPTION": "Enter a description of the new to-do...",
+        "ENTER_NEW_DESCRIPTION": "Enter a new to-do description...",
+        "DESCRIPTION": "Description:"
+    },
+    "TOAST": {
+        "LOADING_TO_DO_LIST": "Loading to-do...",
+        "DELETING_TO_DO": "Deleting to-do...",
+        "SAVING_TO_DO": "Savind to-do...",
+        "ADDING_NEW_TO_DO": "Adding a new to-do...",
+        "LOADED_TO_DO_LIST": "To-do received!",
+        "LOADED_TO_DO_LIST_ERR": "To-do list request error!",
+        "UPDATING_TO_DO_LIST": "Update to-do list...",
+        "STATUS_NO_CHANGE": "Status has not changed!",
+        "STATUS_CHANGES_SUCCESS": "Status changed successfully!",
+        "STATUS_CHANGES_FAILED": "Failed to change status!",
+        "STATUS_CHANGES_ERR": "Status change request error!",
+        "ADDED_NEW_TO_DO_SUCCESS": "Added new to-do successfully!",
+        "ADDED_NEW_TO_DO_FAILED": "Failed to add new to-do!",
+        "ADDED_NEW_TO_DO_ERR": "Add new to-do request error!",
+        "DELETED_TO_DO_SUCCESS": "Deleted to-do successfully!",
+        "DELETED_TO_DO_FAILED": "Failed to delete to-do!",
+        "DELETED_TO_DO_ERR": "Delete to-do request error!",
+        "SAVING_TO_DO_SUCCESS": "Saved to-do successfully!",
+        "SAVING_TO_DO_FAILED": "Failed to save to-do!",
+        "SAVING_TO_DO_ERR": "Save to-do request error!"
+    },
+    "BACKLOG": {
+        "TITLE": "Backlog",
+        "COMPLETED_LIST_EMPTY": "The completed to-do list is empty!",
+        "IN_PROGRESS_LIST_EMPTY": "The to-do list is empty!",
+        "ALL_LIST_EMPTY": "The to-do list is empty, please add new to-dos!"
+    },
+    "BOARD": {
+        "TITLE": "Board",
+        "LIST_EMPTY": "To-do list is empty!"
+    },
+    "STATUS": {
+        "ALL": "All",
+        "COMPLETED": "Completed",
+        "IN_PROGRESS": "InProgress"
+    }
+}

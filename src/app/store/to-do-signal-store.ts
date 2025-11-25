@@ -38,14 +38,14 @@ export const toDoStore = signalStore(
     const getListData = () => 
       toDoService.getList().pipe(
         tap((list) => {
-          toast.showToast("Дела насущнные получены!");
+          toast.showToast('TOAST.LOADED_TO_DO_LIST');
           patchState(store, { 
             isLoad: false,
             list: [...list].sort((a, b) => a.id - b.id),
           });
         }),
         catchError(() => {
-          toast.showToast("Ошибка запроса списка дел!");
+          toast.showToast('TOAST.LOADED_TO_DO_LIST_ERR');
           patchState(store, {
             isLoad: false,
             list: [],
@@ -58,7 +58,7 @@ export const toDoStore = signalStore(
       pipe(
         tap(() => {
           patchState(store, { isLoad: true });
-          toast.showToast("Обновление дел...");
+          toast.showToast('TOAST.UPDATING_TO_DO_LIST');
         }),
         switchMap(() => {
           return getListData();
@@ -82,7 +82,7 @@ export const toDoStore = signalStore(
         pipe(
           switchMap((item) => {
             if (store.list().find((listItem) => listItem.id === item.id)?.status === item.status) {
-              toast.showToast("Статус не изменился!");
+              toast.showToast('TOAST.STATUS_NO_CHANGE');
               return of(null);
             }
             return toDoService.changeItemStatus(item).pipe(
@@ -97,10 +97,10 @@ export const toDoStore = signalStore(
                     list: newList,
                   });
                 }
-                toast.showToast(result ? "Статус успешно изменен!" : "Не удалось изменить статус!");
+                toast.showToast(result ? 'TOAST.STATUS_CHANGES_SUCCESS' : 'TOAST.STATUS_CHANGES_FAILED');
               }),
               catchError(() => {
-                toast.showToast("Ошибка запроса изменения статуса!");
+                toast.showToast('TOAST.STATUS_CHANGES_ERR');
                 patchState(store, {
                   isEdit: false,
                 });
@@ -119,13 +119,13 @@ export const toDoStore = signalStore(
             return toDoService.addItem(item, nextId).pipe(
               tap((result) => {
                 patchState(store, { isAdd: false });
-                toast.showToast(result ? "Дело успешно добавлено!" : "Не удалось добавить дело!");
+                toast.showToast(result ? 'TOAST.ADDED_NEW_TO_DO_SUCCESS' : 'TOAST.ADDED_NEW_TO_DO_FAILED');
                 if (result) {
                   updateList();
                 }
               }),
               catchError(() => {
-                toast.showToast("Ошибка запроса добавления дела!");
+                toast.showToast('TOAST.ADDED_NEW_TO_DO_ERR');
                 patchState(store, { isAdd: false });
                 return EMPTY;
               }),
@@ -144,13 +144,13 @@ export const toDoStore = signalStore(
                   isDelete: false,
                   isEdit: false,
                 });
-                toast.showToast(result ? "Дело успешно удалено!" : "Не удалось удалить дело!");
+                toast.showToast(result ? 'TOAST.DELETED_TO_DO_SUCCESS' : 'TOAST.DELETED_TO_DO_FAILED');
                 if (result) {
                   updateList();
                 }
               }),
               catchError(() => {
-                toast.showToast("Ошибка запроса удааления дела!");
+                toast.showToast('TOAST.DELETED_TO_DO_ERR');
                 patchState(store, { isDelete: false });
                 return EMPTY;
               }),
@@ -169,13 +169,13 @@ export const toDoStore = signalStore(
                   isChange: false,
                   isEdit: false,
                 });
-                toast.showToast(result ? "Дело успешно сохранено!" : "Не удалось изменить дело!");
+                toast.showToast(result ? 'TOAST.SAVING_TO_DO_SUCCESS' : 'TOAST.SAVING_TO_DO_FAILED');
                 if (result) {
                   updateList();
                 }
               }),
               catchError(() => {
-                toast.showToast("Ошибка запроса изменения дела!");
+                toast.showToast('TOAST.SAVING_TO_DO_ERR');
                 patchState(store, { isChange: false });
                 return EMPTY;
               }),

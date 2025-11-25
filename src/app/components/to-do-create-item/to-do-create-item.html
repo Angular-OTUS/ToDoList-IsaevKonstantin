@@ -1,24 +1,24 @@
 <div class="header">
     <img class="img" src="assets/icons/create-icon.svg">
-    <h2>Create new ToDo</h2>
+    <h2>{{ 'LIBRARY.CREATE_NEW_TO_DO' | translate }}</h2>
 </div>
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <tui-textfield class="input" tuiTextfieldSize="m" [tuiTextfieldCleaner]="true">
-        <label tuiLabel for="todoText">Новое дело:</label>
+        <label tuiLabel for="todoText">{{ 'LIBRARY.NEW_TO_DO' | translate }}</label>
         <input
             tuiTextfield
             id="todoText"
-            placeholder="Введите новое дело..."
+            [placeholder]="'LIBRARY.ENTER_NEW_TO_DO' | translate"
             formControlName="text"
         />
     </tui-textfield>
     <tui-expand [expanded]="!!form.get('text')?.valid && !!form.get('text')?.dirty" [style.width]="'100%'">
         <tui-textfield class="textarea" tuiTextfieldSize="m" [tuiTextfieldCleaner]="true">
-            <label tuiLabel for="todoDescription">Описание:</label>
+            <label tuiLabel for="todoDescription">{{ 'LIBRARY.NEW_TO_DO_DESCRIPTION' | translate }}</label>
             <textarea
                 tuiTextarea
                 id="todoDescription"
-                placeholder="Введите описание нового дела..."
+                [placeholder]="'LIBRARY.ENTER_NEW_TO_DO_DESCRIPTION' | translate"
                 formControlName="description"
             ></textarea>
         </tui-textfield>
@@ -28,6 +28,6 @@
         type="submit"
         [class.disabled]="form.invalid"
     >
-        Добавить
+        {{ 'LIBRARY.ADD' | translate }}
     </ui-button>
 </form>

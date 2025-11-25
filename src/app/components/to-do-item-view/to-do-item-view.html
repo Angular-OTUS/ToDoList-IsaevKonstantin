@@ -2,15 +2,15 @@
 <div class="list-description" [class.edited]="isEditValue" >
     @if (!isEditValue) {
         <tui-scrollbar>
-            <span class="title">Описание:</span><br>
+            <span class="title">{{ 'LIBRARY.DESCRIPTION' | translate }}</span><br>
             <span>{{ selectedItem()?.description }}</span>
         </tui-scrollbar>
     } @else {
         <tui-textfield class="textarea-edit" tuiTextfieldSize="m" [tuiTextfieldCleaner]="false">
-            <label tuiLabel>Описание:</label>
+            <label tuiLabel>{{ 'LIBRARY.DESCRIPTION' | translate }}</label>
             <textarea
                 tuiTextarea
-                placeholder="Введите новое описание дела..."
+                [placeholder]="'LIBRARY.ENTER_NEW_DESCRIPTION' | translate"
                 [formControl]="textareaControl"
             ></textarea>
         </tui-textfield>

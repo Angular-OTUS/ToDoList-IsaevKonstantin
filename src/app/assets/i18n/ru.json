@@ -1,0 +1,59 @@
+{
+    "HOME": {
+        "TITLE": "ДоскаЗадач"
+    },
+    "TOOLTIP": {
+        "DESCRIPTION_AND_EDITING": "Нажмите, чтобы посмотреть описание. Нажмите дважды, чтобы редактировать",
+        "ADD_NEW_TO_DO": "Нажмите, чтобы добавить новое дело",
+        "DELETE_TO_DO": "Нажмите, чтобы удалить",
+        "SAVE_TO_DO": "Нажмите, чтобы сохранить изменения"
+    },
+    "LIBRARY": {
+        "ENTER_NEW_TITLE": "Введите новый заголовок дела...",
+        "ENTER_NEW_TO_DO": "Введите новое дело...",
+        "NEW_TO_DO": "Новое дело:",
+        "NEW_TO_DO_DESCRIPTION": "Описание нового дела:",
+        "ADD": "Добавить",
+        "CREATE_NEW_TO_DO": "Создать новое дело",
+        "ENTER_NEW_TO_DO_DESCRIPTION": "Введите описание нового дела...",
+        "ENTER_NEW_DESCRIPTION": "Введите новое описание дела...",
+        "DESCRIPTION": "Описание:"
+    },
+    "TOAST": {
+        "LOADING_TO_DO_LIST": "Загрузка дел...",
+        "DELETING_TO_DO": "Удаление дела...",
+        "SAVING_TO_DO": "Сохранение дела...",
+        "ADDING_NEW_TO_DO": "Добавление нового дела...",
+        "LOADED_TO_DO_LIST": "Дела насущнные получены!",
+        "LOADED_TO_DO_LIST_ERR": "Ошибка запроса списка дел!",
+        "UPDATING_TO_DO_LIST": "Обновление дел...",
+        "STATUS_NO_CHANGE": "Статус не изменился!",
+        "STATUS_CHANGES_SUCCESS": "Статус успешно изменен!",
+        "STATUS_CHANGES_FAILED": "Не удалось изменить статус!",
+        "STATUS_CHANGES_ERR": "Ошибка запроса изменения статуса!",
+        "ADDED_NEW_TO_DO_SUCCESS": "Дело успешно добавлено!",
+        "ADDED_NEW_TO_DO_FAILED": "Не удалось добавить дело!",
+        "ADDED_NEW_TO_DO_ERR": "Ошибка запроса добавления дела!",
+        "DELETED_TO_DO_SUCCESS": "Дело успешно удалено!",
+        "DELETED_TO_DO_FAILED": "Не удалось удалить дело!",
+        "DELETED_TO_DO_ERR": "Ошибка запроса удааления дела!",
+        "SAVING_TO_DO_SUCCESS": "Дело успешно сохранено!",
+        "SAVING_TO_DO_FAILED": "Не удалось изменить дело!",
+        "SAVING_TO_DO_ERR": "Ошибка запроса изменения дела!"
+    },
+    "BACKLOG": {
+        "TITLE": "Редактор",
+        "COMPLETED_LIST_EMPTY": "Список выполненых дел пуст!",
+        "IN_PROGRESS_LIST_EMPTY": "Список не выполненых дел пуст!",
+        "ALL_LIST_EMPTY": "Список дел пуст, добавьте новые дела!"
+    },
+    "BOARD": {
+        "TITLE": "Доска",
+        "LIST_EMPTY": "Список пуст!"
+    },
+    "STATUS": {
+        "ALL": "Все",
+        "COMPLETED": "Выполнено",
+        "IN_PROGRESS": "В процессе"
+    }
+}

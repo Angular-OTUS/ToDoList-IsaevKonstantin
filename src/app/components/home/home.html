@@ -2,13 +2,47 @@
     <aside class="home-menu">
         <div class="home-title">
             <img class="icon" src="assets/icons/home-icon.svg">
-            <h1>TasksBoard</h1>
+            <h1>{{ "HOME.TITLE" | translate }}</h1>
         </div>
 
         <nav class="menu">
-            <span class="menu-item" routerLinkActive="menu-item-active" [routerLinkActiveOptions]="{exact: false}" routerLink="/backlog">Backlog</span>
-            <span class="menu-item" routerLinkActive="menu-item-active" [routerLinkActiveOptions]="{exact: true}" routerLink="/board">Board</span>
+            <span class="menu-item" routerLinkActive="menu-item-active" [routerLinkActiveOptions]="{exact: false}" routerLink="/backlog">{{ 'BACKLOG.TITLE' | translate }}</span>
+            <span class="menu-item" routerLinkActive="menu-item-active" [routerLinkActiveOptions]="{exact: true}" routerLink="/board">{{ 'BOARD.TITLE' | translate }}</span>
         </nav>
+
+        <div class="home-languages">
+            <form
+                tuiGroup
+                class="group"
+                [collapsed]="true"
+                [formGroup]="languageForm"
+            >
+                <label
+                    appearance=""
+                    tuiBlock="s"
+                >
+                    <input
+                        formControlName="languageValue"
+                        tuiBlock
+                        type="radio"
+                        value="ru"
+                    />
+                    ru
+                </label>
+                <label
+                    appearance=""
+                    tuiBlock="s"
+                >
+                    <input
+                        formControlName="languageValue"
+                        tuiBlock
+                        type="radio"
+                        value="en"
+                    />
+                    en
+                </label>
+            </form>
+        </div>
     </aside>
     <main class="home-content">
         <router-outlet></router-outlet>

@@ -1,5 +1,5 @@
 <div class="toast-container">
   @for (msg of messages(); track $index) {
-    <span class="toast">{{ msg }}</span>
+    <span class="toast">{{ msg | translate }}</span>
   }
 </div>

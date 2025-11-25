@@ -5,7 +5,7 @@ export enum EStatus {
 }
 
 export const EStatusInfo = {
-    [EStatus.All]: {text: "All", value: null},
-    [EStatus.Completed]: {text: "Completed", value: true},
-    [EStatus.InProgress]: {text: "InProgress", value: false},
+    [EStatus.All]: {textKey: 'STATUS.ALL', value: null},
+    [EStatus.Completed]: {textKey: 'STATUS.COMPLETED', value: true},
+    [EStatus.InProgress]: {textKey: 'STATUS.IN_PROGRESS', value: false},
 }
