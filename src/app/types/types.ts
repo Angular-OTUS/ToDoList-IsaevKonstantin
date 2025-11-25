@@ -1,1 +1,3 @@
-export type TStatus = "InProgress" | "Completed"
+import { EStatus } from "../enums/status"
+
+export type TStatus = EStatus.InProgress | EStatus.Completed;

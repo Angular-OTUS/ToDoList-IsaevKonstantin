@@ -7,17 +7,18 @@ import { Tooltip } from '../../directives';
 import { IChStatusToDoItem, INewToDoItem, ISaveToDoItem } from '../../interfaces/interfaces';
 import { ToastService } from '../../services/toast';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { EStatus } from '../../enums/status';
+import { EStatus, EStatusInfo } from '../../enums/status';
 import { ToDoCreateItem } from "../to-do-create-item/to-do-create-item";
 import { UiSpinner, UiButton } from '../../library';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { TuiDialogContext, TuiDialogService } from '@taiga-ui/core';
 import { type PolymorpheusContent} from '@taiga-ui/polymorpheus';
 import { toDoStore } from '../../store/to-do-signal-store';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'backlog',
-  imports: [ToDoListItem, ToDoCreateItem, UiSpinner, Tooltip, CommonModule, ReactiveFormsModule, TuiRadioList, RouterOutlet, UiButton],
+  imports: [ToDoListItem, ToDoCreateItem, UiSpinner, Tooltip, CommonModule, ReactiveFormsModule, TuiRadioList, RouterOutlet, UiButton, TranslateModule],
   templateUrl: './backlog.html',
   styleUrl: './backlog.scss',
 })
@@ -31,21 +32,20 @@ export class Backlog implements OnInit {
   protected list = this.store.list;
   protected isLoading = this.store.isLoading;
   protected isEdit = this.store.isEdit;
-  protected statusFilterControl = new FormControl<EStatus>(EStatus.InProgress, { nonNullable: true });
+  protected readonly statusOptions = [
+    { value: EStatus.All, text: EStatusInfo[EStatus.All].textKey },
+    { value: EStatus.InProgress, text: EStatusInfo[EStatus.InProgress].textKey },
+    { value: EStatus.Completed, text: EStatusInfo[EStatus.Completed].textKey },
+  ];
+  protected statusFilterControl = new FormControl<{ value: EStatus, text: string }>(this.statusOptions[1], { nonNullable: true });
   protected filter = toSignal(this.statusFilterControl.valueChanges, {
     initialValue: this.statusFilterControl.value
   });
   protected filteredList = computed(() => {
     const list = this.list();
     const filter = this.filter();
-    return filter === EStatus.All ? list : list.filter((listItem) => listItem.status === filter);
+    return filter.value === EStatus.All ? list : list.filter((listItem) => listItem.status === filter.value);
   });
-  protected readonly eStatus = EStatus;
-  protected readonly statusOptions = [
-    this.eStatus.All,
-    this.eStatus.InProgress,
-    this.eStatus.Completed,
-  ];
 
   get SelectedId(): number | null {
     const currentId = this.route.firstChild?.snapshot.paramMap.get("id");
@@ -53,19 +53,19 @@ export class Backlog implements OnInit {
   }
 
   get NoneToDoText(): string {
-    switch (this.statusFilterControl.value) {
-      case this.eStatus.InProgress:
-        return "Список не выполненых дел пуст!";
-      case this.eStatus.Completed:
-        return "Список выполненых дел пуст!";
+    switch (this.statusFilterControl.value.value) {
+      case EStatus.InProgress:
+        return "BACKLOG.IN_PROGRESS_LIST_EMPTY";
+      case EStatus.Completed:
+        return "BACKLOG.COMPLETED_LIST_EMPTY";
       default:
-        return "Список дел пуст, добавьте новые дела!";
+        return "BACKLOG.ALL_LIST_EMPTY";
     }
   }
 
   constructor() {
     effect(() => {
-      this.store.switchStatusFilter(this.filter());
+      this.store.switchStatusFilter(this.filter().value);
     });
   }
 
@@ -74,12 +74,12 @@ export class Backlog implements OnInit {
   }
 
   private requestList(): void {
-    this.toast.showToast("Загрузка дел...");
+    this.toast.showToast("TOAST.LOADING_TO_DO_LIST");
     this.store.loadList();
   }
 
   protected deleteItem(id: number): void {
-    this.toast.showToast("Удаление дела...");
+    this.toast.showToast("TOAST.DELETING_TO_DO");
     this.store.deleteItem(id);
   }
 
@@ -98,7 +98,7 @@ export class Backlog implements OnInit {
   }
 
   protected saveItem(data: ISaveToDoItem): void {
-    this.toast.showToast("Сохранение дела...");
+    this.toast.showToast("TOAST.SAVING_TO_DO");
     this.store.changeItem(data);
   }
 
@@ -109,7 +109,7 @@ export class Backlog implements OnInit {
   protected createItem(content: PolymorpheusContent<TuiDialogContext<INewToDoItem>>): void {
     this.dialogs.open(content).subscribe({
       next: (item) => {
-        this.toast.showToast("Добавление нового дела...");
+        this.toast.showToast("TOAST.ADDING_NEW_TO_DO");
         this.store.addItem(item);
       },
     });

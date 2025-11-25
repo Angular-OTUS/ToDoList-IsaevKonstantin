@@ -3,6 +3,7 @@ import { IChStatusToDoItem, INewToDoItem, IToDoItem } from "../interfaces/interf
 import { delay, map, Observable, } from "rxjs";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { HttpClient } from "@angular/common/http";
+import { EStatus } from "../enums/status";
 
 @Injectable({
     providedIn: 'root',
@@ -29,7 +30,7 @@ export class ToDoListService {
     }
 
     public addItem(item: INewToDoItem, nextId: number): Observable<boolean> {
-        const newItem: IToDoItem = {...item, id: nextId, status: "InProgress"};
+        const newItem: IToDoItem = {...item, id: nextId, status: EStatus.InProgress};
         return this.http.post<IToDoItem>(this.apiUrl, {...newItem, id: newItem.id.toString()}).pipe(
             takeUntilDestroyed(this.destroyRef), 
             delay(500),

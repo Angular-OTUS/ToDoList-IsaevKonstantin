@@ -1,7 +1,7 @@
 <div class="container">
     <div class="header">
         <img class="img" src="assets/icons/backlog-icon.svg">
-        <h2>Backlog</h2>
+        <h2>{{ 'BACKLOG.TITLE' | translate }}</h2>
     </div>
     @if (isLoading()) {
         <ui-spinner [inheritColor]="true" />
@@ -13,7 +13,12 @@
                     size="s"
                     [formControl]="statusFilterControl"
                     [items]="statusOptions"
-                />
+                    [itemContent]="content"
+                >
+                    <ng-template #content let-item>
+                        {{ item.text | translate }}
+                    </ng-template>
+                </tui-radio-list>
             </div>
             <div class="body">
                 <div class="body-list">
@@ -24,7 +29,7 @@
                                 <li>
                                     <to-do-list-item 
                                         tooltip
-                                        tooltipText="Нажмите, чтобы посмотреть описание. Нажмите дважды, чтобы редактировать"
+                                        [tooltipText]="'TOOLTIP.DESCRIPTION_AND_EDITING' | translate"
                                         tooltipPos="left"
                                         [class.selected]="SelectedId === item.id"
                                         [item]="item"
@@ -39,11 +44,11 @@
                             }
                         </ul>
                     } @else {
-                        <p> {{ NoneToDoText }} </p>
+                        <p> {{ NoneToDoText | translate }} </p>
                     }
                     <ui-button
                         tooltip
-                        tooltipText="Нажмите, чтобы добавить новое дело"
+                        [tooltipText]="'TOOLTIP.ADD_NEW_TO_DO' | translate"
                         tooltipPos="bottom"
                         class="button button-add"
                         (outClickEmitter)="createItem(template)"

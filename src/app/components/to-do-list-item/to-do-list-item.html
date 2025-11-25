@@ -19,7 +19,7 @@
         @if (isDelete) {
             <ui-button 
                 tooltip
-                tooltipText="Нажмите, чтобы удалить"
+                [tooltipText]="'TOOLTIP.DELETE_TO_DO' | translate"
                 tooltipPos="right"
                 class="button button-delete"
                 (outClickEmitter)="outDeleteEmitter()"
@@ -40,14 +40,14 @@
             <tui-textfield class="input" tuiTextfieldSize="s" [tuiTextfieldCleaner]="false">
                 <input
                     tuiTextfield
-                    placeholder="Введите новый заголовок дела..."
+                    [placeholder]="'LIBRARY.ENTER_NEW_TITLE' | translate"
                     [formControl]="textControl"
                 />
             </tui-textfield>
         </div>
         <ui-button 
             tooltip
-            tooltipText="Нажмите, чтобы сохранить изменения"
+            [tooltipText]="'TOOLTIP.SAVE_TO_DO' | translate"
             tooltipPos="right"
             class="button button-add"
             (outClickEmitter)="outSaveEmitter()"

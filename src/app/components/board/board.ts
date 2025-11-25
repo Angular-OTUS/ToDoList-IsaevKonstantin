@@ -11,10 +11,11 @@ import { PolymorpheusContent } from '@taiga-ui/polymorpheus';
 import { ToDoCreateItem } from '../to-do-create-item/to-do-create-item';
 import { Tooltip } from '../../directives';
 import { toDoStore } from '../../store/to-do-signal-store';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'board',
-  imports: [ToDoListItem, ToDoCreateItem, Tooltip, UiSpinner, CommonModule, ReactiveFormsModule, UiButton],
+  imports: [ToDoListItem, ToDoCreateItem, Tooltip, UiSpinner, CommonModule, ReactiveFormsModule, UiButton, TranslateModule],
   templateUrl: './board.html',
   styleUrl: './board.scss',
 })
@@ -45,7 +46,7 @@ export class Board implements OnInit {
   }
 
   private requestList(): void {
-    this.toast.showToast("Загрузка дел...");
+    this.toast.showToast("TOAST.LOADING_TO_DO_LIST");
     this.store.loadList();
   }
 
@@ -56,7 +57,7 @@ export class Board implements OnInit {
   protected createItem(content: PolymorpheusContent<TuiDialogContext<INewToDoItem>>): void {
     this.dialogs.open(content).subscribe({
       next: (item) => {
-        this.toast.showToast("Добавление нового дела...");
+        this.toast.showToast("TOAST.ADDING_NEW_TO_DO");
         this.store.addItem(item);
       },
     });

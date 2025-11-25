@@ -1,7 +1,7 @@
 <div class="container">
   <div class="header">
     <img class="img" src="assets/icons/board-icon.svg">
-    <h2>Board</h2>
+    <h2>{{ 'BOARD.TITLE' | translate }}</h2>
   </div>
   @if (isLoading()) {
     <ui-spinner [inheritColor]="true" />
@@ -9,15 +9,15 @@
     <div class="list">
       <div class="body">
         <ng-container
-          *ngTemplateOutlet="listTemplate; context: { title: 'All', list: allList(), showAdd: true }"
+          *ngTemplateOutlet="listTemplate; context: { title: 'STATUS.ALL', list: allList(), showAdd: true }"
         ></ng-container>
 
         <ng-container
-          *ngTemplateOutlet="listTemplate; context: { title: 'In Progress', list: inProgressList(), showAdd: false }"
+          *ngTemplateOutlet="listTemplate; context: { title: 'STATUS.IN_PROGRESS', list: inProgressList(), showAdd: false }"
         ></ng-container>
 
         <ng-container
-          *ngTemplateOutlet="listTemplate; context: { title: 'Completed', list: completedList(), showAdd: false }"
+          *ngTemplateOutlet="listTemplate; context: { title: 'STATUS.COMPLETED', list: completedList(), showAdd: false }"
         ></ng-container>
       </div>
     </div>
@@ -27,7 +27,7 @@
 <ng-template #listTemplate let-title="title" let-list="list" let-showAdd="showAdd">
   <div class="body-list">
     <div class="body-title">
-      <span>{{ title }}</span>
+      <span>{{ title | translate }}</span>
     </div>
     @if (list.length > 0) {
       <ul>
@@ -42,13 +42,13 @@
         }
       </ul>
     } @else {
-      <p>Список пуст!</p>
+      <p>{{ 'BOARD.LIST_EMPTY' | translate }}</p>
     }
 
     @if (showAdd) {
       <ui-button
         tooltip
-        tooltipText="Нажмите, чтобы добавить новое дело"
+        [tooltipText]="'TOOLTIP.ADD_NEW_TO_DO' | translate"
         tooltipPos="bottom"
         class="button button-add"
         (outClickEmitter)="createItem(template)"

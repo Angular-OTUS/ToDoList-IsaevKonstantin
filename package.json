@@ -32,6 +32,8 @@
     "@ngrx/signals": "^20.1.0",
     "@ngrx/store": "^20.0.1",
     "@ngrx/store-devtools": "^20.0.1",
+    "@ngx-translate/core": "^17.0.0",
+    "@ngx-translate/http-loader": "^17.0.0",
     "@taiga-ui/cdk": "^4.54.0",
     "@taiga-ui/core": "^4.54.0",
     "@taiga-ui/event-plugins": "^4.0.2",

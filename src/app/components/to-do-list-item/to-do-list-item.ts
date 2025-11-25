@@ -6,12 +6,13 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TuiCheckbox } from '@taiga-ui/kit';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { debounceTime } from 'rxjs';
-import { EStatusInfo } from '../../enums/status';
+import { EStatus, EStatusInfo } from '../../enums/status';
 import { UiButton } from '../../library';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'to-do-list-item',
-  imports: [UiButton, Tooltip, FormsModule, ReactiveFormsModule, TuiCheckbox, TuiTextfield],
+  imports: [UiButton, Tooltip, FormsModule, ReactiveFormsModule, TuiCheckbox, TuiTextfield, TranslateModule],
   templateUrl: './to-do-list-item.html',
   styleUrl: './to-do-list-item.scss',
 })
@@ -54,7 +55,7 @@ export class ToDoListItem implements OnInit, OnChanges {
       debounceTime(500),
     ).subscribe(
       (value) => {
-        this.changeStatusEvent.emit({id: this.item.id, status: value ? "Completed" : "InProgress"});
+        this.changeStatusEvent.emit({id: this.item.id, status: value ? EStatus.Completed : EStatus.InProgress});
       },
     );
   }
@@ -76,6 +77,6 @@ export class ToDoListItem implements OnInit, OnChanges {
   }
 
   protected outSaveEmitter(): void {
-    this.saveItemEvent.emit({id: this.item.id, text: this.textControl.value, status: this.statusControl.value ? "Completed" : "InProgress"});
+    this.saveItemEvent.emit({id: this.item.id, text: this.textControl.value, status: this.statusControl.value ? EStatus.Completed : EStatus.InProgress});
   }
 }

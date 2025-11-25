@@ -8,10 +8,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { IToDoItem } from '../../interfaces/interfaces';
 import { toDoStore } from '../../store/to-do-signal-store';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'to-do-item-view',
-  imports: [ReactiveFormsModule, CommonModule, TuiTextfield, TuiTextarea, TuiScrollbar],
+  imports: [ReactiveFormsModule, CommonModule, TuiTextfield, TuiTextarea, TuiScrollbar, TranslateModule],
   templateUrl: './to-do-item-view.html',
   styleUrl: './to-do-item-view.scss'
 })

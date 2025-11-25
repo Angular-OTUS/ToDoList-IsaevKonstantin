@@ -4,11 +4,12 @@ import { TuiDialogContext, TuiExpand, TuiTextfield } from '@taiga-ui/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { INewToDoItem } from '../../interfaces/interfaces';
 import { TuiTextarea } from '@taiga-ui/kit';
-import {POLYMORPHEUS_CONTEXT } from '@taiga-ui/polymorpheus';
+import { POLYMORPHEUS_CONTEXT } from '@taiga-ui/polymorpheus';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'to-do-create-item',
-  imports: [UiButton, ReactiveFormsModule, TuiExpand, TuiTextfield, TuiTextarea],
+  imports: [UiButton, ReactiveFormsModule, TuiExpand, TuiTextfield, TuiTextarea, TranslateModule],
   templateUrl: './to-do-create-item.html',
   styleUrl: './to-do-create-item.scss'
 })
